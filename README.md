@@ -55,7 +55,7 @@ Parameters:
 
 Nothig bad will happen if ```size``` is zero, except assert in DEBUG, but don't pass zero ```size``` value.
 
-Returns: pointer to abstract ```struct memstack_memory``` or ```NULL``` if allocation failed.
+<b>Returns</b>: pointer to abstract ```struct memstack_memory``` or ```NULL``` if allocation failed.
 
 Returned pointer will be suitably aligned for any structure, so may be casted to any poiner type.
 
@@ -101,7 +101,7 @@ If ```mem``` is ```NULL```, then acts like ```memstack_push()```.
 
 Nothig bad will happen if ```new_size``` is zero, except assert in DEBUG, but don't pass zero ```new_size``` value.
 
-Returns: pointer to abstract ```struct memstack_memory``` or ```NULL``` if failed to expand allocation.
+<b>Returns</b>: pointer to abstract ```struct memstack_memory``` or ```NULL``` if failed to expand allocation.
 
 Returned pointer will be suitably aligned for any structure, so may be casted to any poiner type.
 
@@ -130,7 +130,7 @@ struct memstack_bottom *memstack_get_bottom(struct memstack *st);
 Parameters:
 - ```st```  - memstack structure
 
-Returns: pointer to abstract ```struct memstack_bottom``` to pass it to ```memstack_reset()```.
+<b>Returns</b>: pointer to abstract ```struct memstack_bottom``` to pass it to ```memstack_reset()```.
 
 Returned pointer must not be checked, it may have any value, even ```NULL```.
 
@@ -165,6 +165,8 @@ struct memstack_memory *memstack_get_last_mem(struct memstack *st, size_t size);
 Parameters:
 - ```st```   - memstack structure
 - ```size``` - last allocation size, in bytes
+
+<b>Returns</b>: pointer to abstract ```struct memstack_memory``` that was returned by last ```memstack_push()/memstack_repush_last()```.
 
 Note: ```size``` must be exactly the same one that was passed to last ```memstack_push()/memstack_repush_last()```.
 

@@ -195,6 +195,8 @@ void memstack_check(struct memstack *st);
 Parameters:
 - ```st```  - memstack structure
 
+Note: red zone size - build-time configurable via ```DMEMSTACK_TEST_BYTES_COUNT``` macro
+
 #### Print memstack allocations
 ```
 void memstack_print(struct memstack *st);
@@ -202,12 +204,16 @@ void memstack_print(struct memstack *st);
 Parameters:
 - ```st```  - memstack structure
 
+Note: allocations are written to stderr
+
 #### Enable logging of memstack allocations
 ```
 void memstack_enable_log(struct memstack *st);
 ```
 Parameters:
 - ```st```  - memstack structure
+
+Note: allocations are written to stderr
 
 #### Disable logging of memstack allocations
 ```

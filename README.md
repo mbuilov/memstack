@@ -9,19 +9,19 @@ struct memstack - an example of such special object.
 
 ## Api overview
 
-1. [Init memstack structure](#init-memstack-structure)
-2. [Destroy memstack structure](#destroy-memstack-structure)
-3. [Get memory from memstack](#get-memory-from-memstack)
-4. [Give memory back to memstack](#give-memory-back-to-memstack)
-5. [Reallocate last allocation](#reallocate-last-allocation)
-6. [Pop all memory allocations](#pop-all-memory-allocations)
-7. [Get memstack bottom position](#get-memstack-bottom-position)
-8. [Reset memstack to saved state](#reset-memstack-to-saved-state)
-9. [Get pointer to last pushed memory](#get-pointer-to-last-pushed-memory)
+1. [memstack_init](#init-memstack-structure)
+2. [memstack_destroy](#destroy-memstack-structure)
+3. [memstack_push](#get-memory-from-memstack)
+4. [memstack_pop](#give-memory-back-to-memstack)
+5. [memstack_repush_last](#reallocate-last-allocation)
+6. [memstack_cleanup](#pop-all-memory-allocations)
+7. [memstack_get_bottom](#get-memstack-bottom-position)
+8. [memstack_reset](#reset-memstack-to-saved-state)
+9. [memstack_get_last_mem](#get-pointer-to-last-pushed-memory)
 
 #### Init memstack structure
 ```
-void memstack_init(struct memstack *$st);
+void memstack_init(struct memstack *st);
 ```
 Parameters:
 - ```st```  - memstack structure to initialize

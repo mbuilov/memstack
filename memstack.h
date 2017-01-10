@@ -88,9 +88,7 @@ MEMSTACK_EXPORTS MEMSTACK_RETURN_RESTRICT struct memstack_memory *_memstack_push
 	MEMSTACK_NONZERO size_t size/*>0*/ MEMSTACK_DEBUG_ARGS_DECL);
 
 /* memstack_pop(): give memory back to stack;
-  it is possible to give memory back to stack up to given mem pointer:
-  for example, instead of calling memstack_pop 10 times,
-  you can call memstack_pop(stack, 1-st-item-mem-ptr) */
+  it is possible to pop multiple sequential allocations by one call - just pop the first allocation of the sequence */
 /* NOTE: passed mem pointer should be the same one returned by one of memstack_push() */
 MEMSTACK_NONNULL_ARGS
 MEMSTACK_EXPORTS void _memstack_pop_(
@@ -112,8 +110,8 @@ MEMSTACK_EXPORTS MEMSTACK_RETURN_RESTRICT struct memstack_memory *_memstack_repu
 	MEMSTACK_PRE_OPT_VALID MEMSTACK_POST_PTR_INVALID struct memstack_memory *mem/*NULL?*/,
 	MEMSTACK_NONZERO size_t new_size/*>0*/ MEMSTACK_DEBUG_ARGS_DECL);
 
-/* memstack_cleanup(): free all stack items
-  (but remember size of freed items, first push() will try to alloc single block of maximum size) */
+/* memstack_cleanup(): pop all stack items
+  (but remember total size of popped items, first push() will try to allocate single block of maximum size) */
 MEMSTACK_NONNULL_ARGS
 MEMSTACK_EXPORTS void _memstack_cleanup_(MEMSTACK_INOUT struct memstack *st MEMSTACK_DEBUG_ARGS_DECL);
 
@@ -146,7 +144,7 @@ MEMSTACK_NONNULL_ARGS
 MEMSTACK_MUST_CHECK_RESULT MEMSTACK_RET_NEVER_NULL MEMSTACK_RET_ALIGNED
 static inline struct memstack_memory *memstack_get_last_mem(
 	MEMSTACK_IN struct memstack *st,
-	MEMSTACK_NONZERO size_t size)
+	MEMSTACK_NONZERO size_t size/*>0*/)
 {
 	memstack_assert(size && st->last);
 #ifdef MEMSTACK_DEBUG

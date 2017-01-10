@@ -19,6 +19,15 @@ struct memstack - an example of such special object.
 8. [memstack_reset](#reset-memstack-to-saved-state)
 9. [memstack_get_last_mem](#get-pointer-to-last-pushed-memory)
 
+
+## Debug api
+
+1. [memstack_check](#check-red-zones-of-memstack-allocations)
+2. [memstack_print](#print-memstack-allocations)
+3. [memstack_enable_log](#enable-logging-of-memstack-allocations)
+4. [memstack_disable_log](#disable-logging-of-memstack-allocations)
+
+
 #### Init memstack structure
 ```
 void memstack_init(struct memstack *st);
@@ -178,3 +187,31 @@ struct memstack_memory *m1 = memstack_push(st, 100);
 struct memstack_memory *m2 = memstack_get_last_mem(st, 100);
 assert(m1 == m2);
 ```
+
+#### Check red zones of memstack allocations
+```
+void memstack_check(struct memstack *st);
+```
+Parameters:
+- ```st```  - memstack structure
+
+#### Print memstack allocations
+```
+void memstack_print(struct memstack *st);
+```
+Parameters:
+- ```st```  - memstack structure
+
+#### Enable logging of memstack allocations
+```
+void memstack_enable_log(struct memstack *st);
+```
+Parameters:
+- ```st```  - memstack structure
+
+#### Disable logging of memstack allocations
+```
+void memstack_disable_log(struct memstack *st);
+```
+Parameters:
+- ```st```  - memstack structure

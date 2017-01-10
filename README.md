@@ -53,9 +53,9 @@ Parameters:
 - ```st```   - memstack structure
 - ```size``` - number of bytes to allocate, must be non-zero
 
-It's nothig bad will happen if size is zero, except assert in DEBUG, but don't pass zero size value.
+Nothig bad will happen if ```size``` is zero, except assert in DEBUG, but don't pass zero ```size``` value.
 
-Returns: pointer to abstract structure memstack_memory or ```NULL``` if allocation failed.
+Returns: pointer to abstract ```struct memstack_memory``` or ```NULL``` if allocation failed.
 
 Returned pointer will be suitably aligned for any structure, so may be casted to any poiner type.
 
@@ -75,7 +75,7 @@ void memstack_pop(struct memstack *st, struct memstack_memory *mem);
 ```
 Parameters:
 - ```st```  - memstack structure
-- ```mem``` - pointer to abstract structure memstack_memory - the same pointer that was returned by one of previous ```memstack_push()``` calls
+- ```mem``` - pointer to abstract ```struct memstack_memory``` - the same pointer that was returned by one of previous ```memstack_push()``` calls
 
 It is possible to pop multiple sequential allocations by one call - just pop the first allocation of the sequence.
 
@@ -94,14 +94,14 @@ struct memstack_memory *memstack_repush_last(struct memstack *st, struct memstac
 ```
 Parameters:
 - ```st```  - memstack structure
-- ```mem``` - pointer to abstract structure memstack_memory that was returned by last ```memstack_push()``` call
+- ```mem``` - pointer to abstract ```struct memstack_memory``` that was returned by last ```memstack_push()``` call
 - ```new_size``` - new allocation size, in bytes.
 
-If mem is ```NULL```, then acts like ```memstack_push()```.
+If ```mem``` is ```NULL```, then acts like ```memstack_push()```.
 
-It's nothig bad will happen if ```new_size``` is zero, except assert in DEBUG, but don't pass zero ```new_size``` value.
+Nothig bad will happen if ```new_size``` is zero, except assert in DEBUG, but don't pass zero ```new_size``` value.
 
-Returns: pointer to abstract structure memstack_memory or ```NULL``` if failed to expand allocation.
+Returns: pointer to abstract ```struct memstack_memory``` or ```NULL``` if failed to expand allocation.
 
 Returned pointer will be suitably aligned for any structure, so may be casted to any poiner type.
 
@@ -121,7 +121,7 @@ void memstack_cleanup(struct memstack *st);
 Parameters:
 - ```st```  - memstack structure
 
-memstack remembers maximum total size of allocations and will try to allocate one big memory block on first ```memstack_push()``` call.
+Note: memstack remembers maximum total size of allocations and will try to allocate one big memory block on first ```memstack_push()``` call.
 
 #### Get memstack bottom position
 ```
@@ -130,7 +130,7 @@ struct memstack_bottom *memstack_get_bottom(struct memstack *st);
 Parameters:
 - ```st```  - memstack structure
 
-Returns: pointer to abstract structure memstack_bottom to pass it to ```memstack_reset()```.
+Returns: pointer to abstract ```struct memstack_bottom``` to pass it to ```memstack_reset()```.
 
 Returned pointer must not be checked, it may have any value, even ```NULL```.
 
@@ -146,7 +146,7 @@ Parameters:
 - ```st```  - memstack structure
 - ```pos``` - memstack state obtained via ```memstack_get_bottom()```
 
-All memory allocated after pos was taken is popped.
+All memory allocated after ```pos``` was taken is popped.
 
 Example:
 ```
@@ -166,7 +166,7 @@ Parameters:
 - ```st```   - memstack structure
 - ```size``` - last allocation size, in bytes
 
-Note: ```size``` must be exactly the same one that was passed to ```memstack_push()/memstack_repush_last()```.
+Note: ```size``` must be exactly the same one that was passed to last ```memstack_push()/memstack_repush_last()```.
 
 Example:
 ```

@@ -204,7 +204,7 @@ void memstack_print(struct memstack *st);
 Parameters:
 - ```st```  - memstack structure
 
-Note: allocations are written to stderr
+Note: allocations are written to ```stderr```
 
 #### Enable logging of memstack allocations
 ```
@@ -213,7 +213,7 @@ void memstack_enable_log(struct memstack *st);
 Parameters:
 - ```st```  - memstack structure
 
-Note: allocations are written to stderr
+Note: allocations are written to ```stderr```
 
 #### Disable logging of memstack allocations
 ```

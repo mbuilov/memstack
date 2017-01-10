@@ -9,15 +9,15 @@ struct memstack - an example of such special object.
 
 ## Api overview
 
-1. [Init memstack structure](#memstack_init)
-2. [Destroy memstack structure, free all allocated memory](#memstack_destroy)
-3. [Get memory from memstack](#memstack_push)
-4. [Give memory back to memstack](#memstack_pop)
-5. [Reallocate last allocation](#memstack_repush_last)
-6. [Pop all memory allocations](#memstack_cleanup)
-7. [Get memstack bottom position](#memstack_get_bottom)
-8. [Reset memstack to saved state](#memstack_reset)
-9. [Get pointer to last pushed memory](#memstack_get_last_mem)
+1. [Init memstack structure](#init-memstack-structure)
+2. [Destroy memstack structure](#destroy-memstack-structure)
+3. [Get memory from memstack](#get-memory-from-memstack)
+4. [Give memory back to memstack](#give-memory-back-to-memstack)
+5. [Reallocate last allocation](#reallocate-last-allocation)
+6. [Pop all memory allocations](#pop-all-memory-allocations)
+7. [Get memstack bottom position](#get-memstack-bottom-position)
+8. [Reset memstack to saved state](#reset-memstack-to-saved-state)
+9. [Get pointer to last pushed memory](#get-pointer-to-last-pushed-memory)
 
 #### Init memstack structure
 ```
@@ -36,12 +36,14 @@ It's also possible to initialize memstack statically:
 struct memstack st = MEMSTACK_STATIC_INITIALIZER;
 ```
 
-#### Destroy memstack structure, free all allocated memory
+#### Destroy memstack structure
 ```
 void memstack_destroy(struct memstack *st);
 ```
 Parameters:
 - ```st```  - memstack structure to destroy
+
+All memory allocated by memstack is deallocated.
 
 #### Get memory from memstack
 ```

@@ -103,11 +103,10 @@ MEMSTACK_EXPORTS void _memstack_pop_(
 /* NOTE: unlike realloc() this function works only with LAST allocated in stack memory block! */
 /* NOTE: passed mem pointer should be the same one returned by the memstack_push() */
 MEMSTACK_NONNULL_ARG_1
-MEMSTACK_MUST_CHECK_RESULT MEMSTACK_RET_MAYBENULL MEMSTACK_RET_ALIGNED
-MEMSTACK_POST_WRITABLE_BYTE_SIZE(new_size) MEMSTACK_SUCCESS(return != NULL)
+MEMSTACK_MUST_CHECK_RESULT MEMSTACK_RET_MAYBENULL MEMSTACK_RET_ALIGNED MEMSTACK_POST_WRITABLE_BYTE_SIZE(new_size)
 MEMSTACK_EXPORTS MEMSTACK_RETURN_RESTRICT struct memstack_memory *_memstack_repush_last__(
 	MEMSTACK_INOUT struct memstack *st,
-	MEMSTACK_PRE_OPT_VALID MEMSTACK_POST_PTR_INVALID struct memstack_memory *mem/*NULL?*/,
+	MEMSTACK_PRE_OPT_VALID MEMSTACK_WHEN(return != NULL, MEMSTACK_POST_PTR_INVALID) struct memstack_memory *mem/*NULL?*/,
 	MEMSTACK_NONZERO size_t new_size/*>0*/ MEMSTACK_DEBUG_ARGS_DECL);
 
 /* memstack_cleanup(): pop all stack items
@@ -171,17 +170,16 @@ static inline struct memstack_memory *memstack_get_last_mem(
 
 #ifdef MEMSTACK_DEBUG
 /* check for access violations on memory blocks allocated from the stack */
-#define memstack_check(st)       memstack_base_check(&(st)->base)
+#define memstack_check(st)              memstack_base_check(&(st)->base)
 /* print all memory blocks allocated from the stack */
-#define memstack_print(st)       memstack_base_print(&(st)->base)
+#define memstack_print(st)              memstack_base_print(&(st)->base)
 /* enable/disable memory operations log */
-#define memstack_enable_log(st)  memstack_base_enable_log(&(st)->base)
-#define memstack_disable_log(st) memstack_base_disable_log(&(st)->base)
+#define memstack_enable_log(st, enable) memstack_base_enable_log(&(st)->base, enable)
 #else
-#define memstack_check(st)       ((void)(st))
-#define memstack_print(st)       ((void)(st))
-#define memstack_enable_log(st)  ((void)(st))
-#define memstack_disable_log(st) ((void)(st))
+#define memstack_check(st)              ((void)(st))
+#define memstack_print(st)              ((void)(st))
+#define memstack_enable_log(st, enable) ((void)(st),(enable))
 #endif
+
 
 #endif /* MEMSTACK_H_INCLUDED */

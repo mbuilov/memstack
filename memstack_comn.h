@@ -76,7 +76,6 @@ typedef int _check_MEMSTACK_MEM_ALIGN_SIZE_no_too_big[1-2*((MEMSTACK_MEM_ALIGN_S
 #define MEMSTACK_POST_SATISFIES(e)            _Post_satisfies_(e)
 #define MEMSTACK_OUT_WRITES_ALL(s)            _Out_writes_all_(s)
 #define MEMSTACK_IN_READS(s)                  _In_reads_(s)
-#define MEMSTACK_SUCCESS(e)                   _Success_(e)
 #define MEMSTACK_RETURN_RESTRICT              __declspec(restrict)
 #define MEMSTACK_MUST_CHECK_RESULT            _Check_return_
 #define MEMSTACK_RET_NEVER_NULL               _Ret_notnull_
@@ -127,7 +126,6 @@ typedef int _check_MEMSTACK_MEM_ALIGN_SIZE_no_too_big[1-2*((MEMSTACK_MEM_ALIGN_S
 #define MEMSTACK_POST_SATISFIES(e)
 #define MEMSTACK_OUT_WRITES_ALL(s)
 #define MEMSTACK_IN_READS(s)
-#define MEMSTACK_SUCCESS(e)
 #define MEMSTACK_RETURN_RESTRICT
 #endif
 

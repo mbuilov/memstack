@@ -23,9 +23,8 @@ struct memstack - an example of such special object.
 ## Debug api
 
 1. [memstack_check](#check-red-zones-of-memstack-allocations)
-2. [memstack_print](#print-memstack-allocations)
+2. [memstack_print](#print-current-memstack-allocations)
 3. [memstack_enable_log](#enable-logging-of-memstack-allocations)
-4. [memstack_disable_log](#disable-logging-of-memstack-allocations)
 
 
 #### Init memstack structure
@@ -56,15 +55,13 @@ All memory allocated by memstack is deallocated.
 
 #### Get memory from memstack
 ```
-struct memstack_memory *memstack_push(struct memstack *st, size_t size);
+memstack_memory_t *memstack_push(struct memstack *st, size_t size);
 ```
 Parameters:
 - ```st```   - memstack structure
 - ```size``` - number of bytes to allocate, must be non-zero
 
-Nothig bad will happen if ```size``` is zero, except assert in DEBUG, but don't pass zero ```size``` value.
-
-<b>Returns:</b> pointer to abstract ```struct memstack_memory``` or ```NULL``` if allocation failed.
+<b>Returns:</b> pointer to abstract structure ```memstack_memory_t``` or ```NULL``` if allocation failed.
 
 Returned pointer will be suitably aligned for any structure, so may be casted to any poiner type.
 
@@ -80,11 +77,11 @@ if (!m)
 
 #### Give memory back to memstack
 ```
-void memstack_pop(struct memstack *st, struct memstack_memory *mem);
+void memstack_pop(struct memstack *st, memstack_memory_t *mem);
 ```
 Parameters:
 - ```st```  - memstack structure
-- ```mem``` - pointer to abstract ```struct memstack_memory``` - the same pointer that was returned by one of previous ```memstack_push()``` calls
+- ```mem``` - pointer to abstract structure ```memstack_memory_t``` - the same pointer that was returned by one of previous ```memstack_push()``` calls
 
 It is possible to pop multiple sequential allocations by one call - just pop the first allocation of the sequence.
 
@@ -94,23 +91,21 @@ Note: ```memstack_pop()``` may not call system ```free()``` for the last popped 
 ```
 extern struct memstack *st;
 extern struct my_struct *m;
-memstack_pop(st, (struct memstack_memory*)m);
+memstack_pop(st, (memstack_memory_t*)m);
 ```
 
 #### Reallocate last allocation
 ```
-struct memstack_memory *memstack_repush_last(struct memstack *st, struct memstack_memory *mem, size_t new_size);
+memstack_memory_t *memstack_repush_last(struct memstack *st, memstack_memory_t *mem, size_t new_size);
 ```
 Parameters:
 - ```st```  - memstack structure
-- ```mem``` - pointer to abstract ```struct memstack_memory``` that was returned by last ```memstack_push()``` call
-- ```new_size``` - new allocation size, in bytes.
+- ```mem``` - pointer to abstract structure ```memstack_memory_t``` that was returned by last ```memstack_push()``` call or ```NULL```
+- ```new_size``` - new allocation size, in bytes, must be non-zero.
 
 If ```mem``` is ```NULL```, then acts like ```memstack_push()```.
 
-Nothig bad will happen if ```new_size``` is zero, except assert in DEBUG, but don't pass zero ```new_size``` value.
-
-<b>Returns:</b> pointer to abstract ```struct memstack_memory``` or ```NULL``` if failed to expand allocation.
+<b>Returns:</b> pointer to abstract structure ```memstack_memory_t``` or ```NULL``` if failed to expand existing allocation or create new allocation.
 
 Returned pointer will be suitably aligned for any structure, so may be casted to any poiner type.
 
@@ -118,7 +113,7 @@ Returned pointer will be suitably aligned for any structure, so may be casted to
 ```
 extern struct memstack *st;
 extern void *m;
-m = memstack_repush_last(st, (struct memstack_memory*)m, 100);
+m = memstack_repush_last(st, (memstack_memory_t*)m, 100);
 if (!m)
     fail;
 ```
@@ -134,12 +129,12 @@ Note: memstack remembers maximum total size of allocations and will try to alloc
 
 #### Get memstack bottom position
 ```
-struct memstack_bottom *memstack_get_bottom(struct memstack *st);
+memstack_bottom_t *memstack_get_bottom(struct memstack *st);
 ```
 Parameters:
 - ```st```  - memstack structure
 
-<b>Returns:</b> pointer to abstract ```struct memstack_bottom``` to pass it to ```memstack_reset()```.
+<b>Returns:</b> pointer to abstract structure ```memstack_bottom_t``` for passing it to ```memstack_reset()```.
 
 Returned pointer must not be checked, it may have any value, even ```NULL```.
 
@@ -149,42 +144,44 @@ Note: saved state is associated with last memstack allocation that may be made b
 
 #### Reset memstack to saved state
 ```
-void memstack_reset(struct memstack *st, struct memstack_bottom *pos);
+void memstack_reset(struct memstack *st, memstack_bottom_t *pos);
 ```
 Parameters:
 - ```st```  - memstack structure
-- ```pos``` - memstack state obtained via ```memstack_get_bottom()```
+- ```pos``` - memstack state previously obtained via ```memstack_get_bottom()``` or ```NULL```
 
-All memory allocated after ```pos``` was taken is popped.
+All memory allocated in memstack after ```pos``` was taken is popped.
+
+If ```pos``` is ```NULL```, then acts like ```memstack_cleanup()```.
 
 <i>Example:</i>
 ```
 extern struct memstack *st;
-struct memstack_bottom *pos = memstack_get_bottom(st);
-struct memstack_memory *m1 = memstack_push(st, 100);
-struct memstack_memory *m2 = memstack_push(st, 200);
+memstack_bottom_t *pos = memstack_get_bottom(st);
+memstack_memory_t *m1 = memstack_push(st, 100);
+memstack_memory_t *m2 = memstack_push(st, 200);
 ....
 memstack_reset(st, pos);
 ```
 
 #### Get pointer to last pushed memory
 ```
-struct memstack_memory *memstack_get_last_mem(struct memstack *st, size_t size);
+memstack_memory_t *memstack_get_last_mem(struct memstack *st, size_t size);
 ```
 Parameters:
 - ```st```   - memstack structure
-- ```size``` - last allocation size, in bytes
+- ```size``` - last allocation size, in bytes, must be non-zero
 
-<b>Returns:</b> pointer to abstract ```struct memstack_memory``` that was returned by last ```memstack_push()/memstack_repush_last()```.
+<b>Returns:</b> pointer to abstract structure ```memstack_memory_t``` that was returned by last ```memstack_push()/memstack_repush_last()``` call.
 
-Note: ```size``` must be exactly the same one that was passed to last ```memstack_push()/memstack_repush_last()```.
+Note: ```size``` must be exactly the same one that was passed to last ```memstack_push()/memstack_repush_last()``` call.
 
 <i>Example:</i>
 ```
 extern struct memstack *st;
-struct memstack_memory *m1 = memstack_push(st, 100);
+memstack_memory_t *m1 = memstack_push(st, 100);
 ....
-struct memstack_memory *m2 = memstack_get_last_mem(st, 100);
+memstack_memory_t *m2 = memstack_get_last_mem(st, 100);
 assert(m1 == m2);
 ```
 
@@ -197,7 +194,7 @@ Parameters:
 
 Note: red zone size - build-time configurable via ```DMEMSTACK_TEST_BYTES_COUNT``` macro
 
-#### Print memstack allocations
+#### Print current memstack allocations
 ```
 void memstack_print(struct memstack *st);
 ```
@@ -208,16 +205,10 @@ Note: allocations are written to ```stderr```
 
 #### Enable logging of memstack allocations
 ```
-void memstack_enable_log(struct memstack *st);
+void memstack_enable_log(struct memstack *st, int enable);
 ```
 Parameters:
-- ```st```  - memstack structure
+- ```st```     - memstack structure
+- ```enable``` - non-zero to enable logging, 0 - to disable
 
 Note: allocations are written to ```stderr```
-
-#### Disable logging of memstack allocations
-```
-void memstack_disable_log(struct memstack *st);
-```
-Parameters:
-- ```st```  - memstack structure

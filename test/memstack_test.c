@@ -13,8 +13,7 @@
 #include "memstack.h"
 
 struct data {
-	unsigned sz;
-	char mem[1];
+	char mem[7];
 };
 
 static void test(void)
@@ -22,13 +21,15 @@ static void test(void)
 	struct memstack stack;
 	struct memstack *st = &stack;
 	memstack_init(st);
-	memstack_enable_log(st);
+	memstack_enable_log(st, 1);
 	assert(!memstack_get_bottom(st));
 	{
-		struct memstack_memory *mem = memstack_push(st, 7);
-		assert(mem);
-		memstack_pop(st, mem);
-		mem = memstack_push(st, 10);
+		struct data *data = (struct data*)memstack_push(st, sizeof(*data));
+		assert(data);
+		memstack_pop(st, (memstack_memory_t*)data);
+	}
+	{
+		memstack_memory_t *mem = memstack_push(st, 10);
 		assert(mem);
 		{
 			int k = 0;
@@ -36,11 +37,11 @@ static void test(void)
 				((char*)mem)[k] = (char)(k + 1);
 		}
 		{
-			struct memstack_memory *mem2 = memstack_push(st, 5);
+			memstack_memory_t *mem2 = memstack_push(st, 5);
 			assert(mem2);
 			{
 				/* number of bytes (5) must be the same as passed to previous memstack_push() */
-				struct memstack_memory *mem3 = memstack_get_last_mem(st, 5);
+				memstack_memory_t *mem3 = memstack_get_last_mem(st, 5);
 				assert(mem3);
 				assert(mem2 == mem3);
 				memstack_pop(st, mem3);
@@ -70,10 +71,10 @@ static void test(void)
 		{
 			struct memstack_bottom *pos = memstack_get_bottom(st);
 			{
-				struct memstack_memory *mem2 = memstack_push(st, 5);
+				memstack_memory_t *mem2 = memstack_push(st, 5);
 				assert(mem2);
 				{
-					struct memstack_memory *mem3 = memstack_push(st, 50);
+					memstack_memory_t *mem3 = memstack_push(st, 50);
 					assert(mem3);
 					memstack_print(st);
 				}
@@ -89,14 +90,14 @@ static void test(void)
 	memstack_cleanup(st);
 	assert(!memstack_get_bottom(st));
 	{
-		struct memstack_memory *mem = memstack_push(st, 1);
+		memstack_memory_t *mem = memstack_push(st, 1);
 		assert(mem);
 	}
 	memstack_cleanup(st);
 	{
-		struct memstack_memory *mem1 = memstack_push(st, 500);
+		memstack_memory_t *mem1 = memstack_push(st, 500);
 		if (mem1) {
-			struct memstack_memory *mem2 = memstack_push(st, 600);
+			memstack_memory_t *mem2 = memstack_push(st, 600);
 			if (mem2)
 				memstack_pop(st, mem2);
 			memstack_pop(st, mem1);
@@ -104,9 +105,9 @@ static void test(void)
 		memstack_cleanup(st);
 	}
 	{
-		struct memstack_memory *mem1 = memstack_push(st, 5);
-		struct memstack_memory *mem2 = memstack_push(st, 6);
-		struct memstack_memory *mem3 = memstack_repush_last(st, mem2, 7000);
+		memstack_memory_t *mem1 = memstack_push(st, 5);
+		memstack_memory_t *mem2 = memstack_push(st, 6);
+		memstack_memory_t *mem3 = memstack_repush_last(st, mem2, 7000);
 		(void)mem1, (void)mem3;
 	}
 	memstack_destroy(st);

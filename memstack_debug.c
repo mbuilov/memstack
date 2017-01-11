@@ -83,10 +83,11 @@ void *dmemstack_block_added(
 	dmemstack_set_mem_mask((char*)b + DMEMSTACK_BLOCK_HDR_SIZE, DMEMSTACK_BEGIN_MEMORY_MASK);
 	dmemstack_set_mem_mask((char*)m + size, DMEMSTACK_END_MEMORY_MASK);
 	memset(m, DMEMSTACK_UNINITIALIZED_MEMORY_MASK, size);
-	if (d_info->print_mem_log)
+	if (d_info->print_mem_log) {
 		MEMSTACK_LOG(MEMSTACK_LOG_ARG "[%lu(%p): memstack_mem += %lu = %lu pushed (at %s:%u)]\n",
 			(unsigned long)(~0ul & d_info->block_number), m, (unsigned long)(~0ul & size),
 			(unsigned long)(~0ul & d_info->mem_usage), file, line);
+	}
 	d_info->block_number++;
 	return m;
 }
@@ -105,12 +106,13 @@ void *dmemstack_last_block_reallocated(
 	size_t diff = _memstack_diff(new_size, b->dsize); /* may be negative */
 	if (diff) {
 		dmemstack_inc_mem_usage(d_info, diff);
-		if (d_info->print_mem_log)
+		if (d_info->print_mem_log) {
 			MEMSTACK_LOG(MEMSTACK_LOG_ARG "[%lu(%p): mem %c= %lu = %lu repushed to %p (at %s:%u) (block was %s at %s:%u)]\n",
 				(unsigned long)(~0ul & b->number), old_mem, b->dsize > new_size ? '-' : '+',
 				(unsigned long)(~0ul & (b->dsize > new_size ? b->dsize - new_size : new_size - b->dsize)),
 				(unsigned long)(~0ul & d_info->mem_usage), m, file, line,
 				dmemstack_get_alloc_op_name(b), b->file, (unsigned)b->line);
+		}
 		b->repushed = 1;
 		b->line = line & (~0u >> 1);
 		b->file = file;
@@ -182,11 +184,12 @@ void dmemstack_pop_blocks(
 		if (!dmemstack_check_block(b))
 			break; /* memory corrupted */
 		dmemstack_dec_mem_usage(d_info, b->dsize);
-		if (d_info->print_mem_log)
+		if (d_info->print_mem_log) {
 			MEMSTACK_LOG(MEMSTACK_LOG_ARG "[%lu(%p): memstack_mem -= %lu = %lu popped (at %s:%u) (block was %s at %s:%u)]\n",
 				(unsigned long)(~0ul & b->number), DMEMSTACK_BLOCK_MEM(b),
 				(unsigned long)(~0ul & b->dsize), (unsigned long)(~0ul & d_info->mem_usage), file, line,
 				dmemstack_get_alloc_op_name(b), b->file, (unsigned)b->line);
+		}
 		d_info->last_block = b->dprev;
 	} while (b != until_block);
 }
@@ -210,11 +213,12 @@ void dmemstack_reset_blocks(
 		if ((char*)b + memstack_align_size(DMEMSTACK_DEBUG_INFO_SIZE + b->dsize) == block_end)
 			break;
 		dmemstack_dec_mem_usage(d_info, b->dsize);
-		if (d_info->print_mem_log)
+		if (d_info->print_mem_log) {
 			MEMSTACK_LOG(MEMSTACK_LOG_ARG "[%lu(%p): memstack_mem -= %lu = %lu popped (at %s:%u) (block was %s at %s:%u)]\n",
 				(unsigned long)(~0ul & b->number), DMEMSTACK_BLOCK_MEM(b),
 				(unsigned long)(~0ul & b->dsize), (unsigned long)(~0ul & d_info->mem_usage), file, line,
 				dmemstack_get_alloc_op_name(b), b->file, (unsigned)b->line);
+		}
 		d_info->last_block = b->dprev;
 	}
 }

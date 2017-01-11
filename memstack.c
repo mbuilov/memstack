@@ -61,10 +61,9 @@ MEMSTACK_NONNULL_ARGS
 MEMSTACK_MUST_CHECK_RESULT MEMSTACK_RET_MAYBENULL MEMSTACK_RET_ALIGNED
 MEMSTACK_PRE_SATISFIES(memstack_is_aligned(aligned_size))
 MEMSTACK_POST_WRITABLE_BYTE_SIZE(MEMSTACK_ITEM_HDR_SIZE + aligned_size)
-MEMSTACK_SUCCESS(return != NULL)
 static inline MEMSTACK_RETURN_RESTRICT struct memstack_item *memstack_realloc_item(
 	MEMSTACK_IN const struct memstack *st,
-	MEMSTACK_PRE_VALID MEMSTACK_POST_PTR_INVALID struct memstack_item *last,
+	MEMSTACK_PRE_VALID MEMSTACK_WHEN(return != NULL, MEMSTACK_POST_PTR_INVALID) struct memstack_item *last,
 	MEMSTACK_NONZERO size_t aligned_size MEMSTACK_DEBUG_ARGS_DECL)
 {
 	memstack_assert(aligned_size && memstack_is_aligned(aligned_size));
@@ -272,10 +271,9 @@ MEMSTACK_PRE_SATISFIES(aligned_old_size != aligned_new_size)
 MEMSTACK_PRE_SATISFIES(memstack_is_aligned(aligned_old_size))
 MEMSTACK_PRE_SATISFIES(memstack_is_aligned(aligned_new_size))
 MEMSTACK_POST_WRITABLE_BYTE_SIZE(aligned_new_size)
-MEMSTACK_SUCCESS(return != NULL)
 static MEMSTACK_RETURN_RESTRICT struct memstack_memory *_memstack_repush_item_(
 	MEMSTACK_INOUT struct memstack *st,
-	MEMSTACK_NOTNULL MEMSTACK_POST_PTR_INVALID
+	MEMSTACK_PRE_VALID MEMSTACK_WHEN(return != NULL, MEMSTACK_POST_PTR_INVALID)
 		MEMSTACK_PRE_READABLE_BYTE_SIZE(aligned_old_size) struct memstack_memory *mem,
 	MEMSTACK_NONZERO size_t aligned_old_size/*!=aligned_new_size*/,
 	MEMSTACK_NONZERO size_t aligned_new_size MEMSTACK_DEBUG_ARGS_DECL)
@@ -356,11 +354,10 @@ static MEMSTACK_RETURN_RESTRICT struct memstack_memory *_memstack_repush_item_(
 }
 
 MEMSTACK_NONNULL_ARG_1
-MEMSTACK_MUST_CHECK_RESULT MEMSTACK_RET_MAYBENULL MEMSTACK_RET_ALIGNED
-MEMSTACK_POST_WRITABLE_BYTE_SIZE(new_size) MEMSTACK_SUCCESS(return != NULL)
+MEMSTACK_MUST_CHECK_RESULT MEMSTACK_RET_MAYBENULL MEMSTACK_RET_ALIGNED MEMSTACK_POST_WRITABLE_BYTE_SIZE(new_size)
 MEMSTACK_EXPORTS MEMSTACK_RETURN_RESTRICT struct memstack_memory *_memstack_repush_last__(
 	MEMSTACK_INOUT struct memstack *st,
-	MEMSTACK_PRE_OPT_VALID MEMSTACK_POST_PTR_INVALID struct memstack_memory *mem/*NULL?*/,
+	MEMSTACK_PRE_OPT_VALID MEMSTACK_WHEN(return != NULL, MEMSTACK_POST_PTR_INVALID) struct memstack_memory *mem/*NULL?*/,
 	MEMSTACK_NONZERO size_t new_size/*>0*/ MEMSTACK_DEBUG_ARGS_DECL)
 {
 	memstack_assert(new_size);

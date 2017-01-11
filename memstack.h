@@ -56,6 +56,38 @@ struct memstack_item {
 struct memstack {
 	struct memstack_base base;
 	struct memstack_item *last; /* last allocated stack item, may be NULL */
+#ifdef __cplusplus
+
+	inline void init();
+	inline void destroy();
+
+	MEMSTACK_RETURN_RESTRICT
+	inline struct memstack_memory *push(MEMSTACK_NONZERO size_t size/*>0*/);
+
+	MEMSTACK_NONNULL_ARGS
+	inline void pop(MEMSTACK_NOTNULL MEMSTACK_POST_PTR_INVALID struct memstack_memory *mem);
+
+	MEMSTACK_MUST_CHECK_RESULT MEMSTACK_RET_MAYBENULL MEMSTACK_RET_ALIGNED MEMSTACK_POST_WRITABLE_BYTE_SIZE(new_size)
+	MEMSTACK_RETURN_RESTRICT
+	inline struct memstack_memory *repush_last(
+		MEMSTACK_PRE_OPT_VALID MEMSTACK_WHEN(return != NULL, MEMSTACK_POST_PTR_INVALID) struct memstack_memory *mem/*NULL?*/,
+		MEMSTACK_NONZERO size_t new_size/*>0*/);
+
+	inline void cleanup();
+
+	MEMSTACK_MUST_CHECK_RESULT MEMSTACK_RET_MAYBENULL MEMSTACK_RET_ALIGNED
+	inline struct memstack_bottom *get_bottom();
+
+	inline void reset(MEMSTACK_MAYBENULL struct memstack_bottom *pos/*NULL?*/);
+
+	MEMSTACK_MUST_CHECK_RESULT MEMSTACK_RET_NEVER_NULL MEMSTACK_RET_ALIGNED
+	inline struct memstack_memory *get_last_mem(MEMSTACK_NONZERO size_t size/*>0*/);
+
+	inline void check();
+	inline void print();
+	inline void enable_log(bool enable);
+
+#endif /* __cplusplus */
 };
 
 /* static initializer */
@@ -181,5 +213,76 @@ static inline struct memstack_memory *memstack_get_last_mem(
 #define memstack_enable_log(st, enable) ((void)(st),(enable))
 #endif
 
+#ifdef __cplusplus
+
+void memstack::init()
+{
+	memstack_init(this);
+}
+
+void memstack::destroy()
+{
+	memstack_destroy(this);
+}
+
+MEMSTACK_RETURN_RESTRICT
+struct memstack_memory *memstack::push(MEMSTACK_NONZERO size_t size/*>0*/)
+{
+	return memstack_push(this, size);
+}
+
+MEMSTACK_NONNULL_ARGS
+void memstack::pop(MEMSTACK_NOTNULL MEMSTACK_POST_PTR_INVALID struct memstack_memory *mem)
+{
+	memstack_pop(this, mem);
+}
+
+MEMSTACK_MUST_CHECK_RESULT MEMSTACK_RET_MAYBENULL MEMSTACK_RET_ALIGNED MEMSTACK_POST_WRITABLE_BYTE_SIZE(new_size)
+MEMSTACK_RETURN_RESTRICT
+struct memstack_memory *memstack::repush_last(
+	MEMSTACK_PRE_OPT_VALID MEMSTACK_WHEN(return != NULL, MEMSTACK_POST_PTR_INVALID) struct memstack_memory *mem/*NULL?*/,
+	MEMSTACK_NONZERO size_t new_size/*>0*/)
+{
+	return memstack_repush_last(this, mem, new_size);
+}
+
+void memstack::cleanup()
+{
+	memstack_cleanup(this);
+}
+
+MEMSTACK_MUST_CHECK_RESULT MEMSTACK_RET_MAYBENULL MEMSTACK_RET_ALIGNED
+struct memstack_bottom *memstack::get_bottom()
+{
+	return memstack_get_bottom(this);
+}
+
+void memstack::reset(MEMSTACK_MAYBENULL struct memstack_bottom *pos/*NULL?*/)
+{
+	memstack_reset(this, pos);
+}
+
+MEMSTACK_MUST_CHECK_RESULT MEMSTACK_RET_NEVER_NULL MEMSTACK_RET_ALIGNED
+struct memstack_memory *memstack::get_last_mem(MEMSTACK_NONZERO size_t size/*>0*/)
+{
+	return memstack_get_last_mem(this, size);
+}
+
+void memstack::check()
+{
+	return memstack_check(this);
+}
+
+void memstack::print()
+{
+	return memstack_print(this);
+}
+
+void memstack::enable_log(bool enable)
+{
+	return memstack_enable_log(this, enable ? 1 : 0);
+}
+
+#endif /* __cplusplus */
 
 #endif /* MEMSTACK_H_INCLUDED */

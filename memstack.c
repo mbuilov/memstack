@@ -128,9 +128,10 @@ static int _memstack_push_item_(
 		{
 			struct memstack_item *item = memstack_alloc_item(st, aligned_size MEMSTACK_DEBUG_ARGS_PASS);
 			if (_memstack_unlikely(!item)) {
-				if (free_last)
+				if (free_last) {
 					/* _memstack_free(st->last) was called */
 					memstack_cleanup_or_set_last_item(st, prev_item/*NULL?*/);
+				}
 				return 0; /* not enough system memory */
 			}
 			item->prev = prev_item;
@@ -149,7 +150,7 @@ static int _memstack_push_item_(
 
 MEMSTACK_NONNULL_ARGS
 MEMSTACK_MUST_CHECK_RESULT MEMSTACK_RET_MAYBENULL MEMSTACK_RET_ALIGNED MEMSTACK_POST_WRITABLE_BYTE_SIZE(size)
-MEMSTACK_EXPORTS MEMSTACK_RETURN_RESTRICT struct memstack_memory *_memstack_push__(
+MEMSTACK_EXPORTS MEMSTACK_RETURN_RESTRICT memstack_memory_t *_memstack_push__(
 	MEMSTACK_INOUT struct memstack *st,
 	MEMSTACK_NONZERO size_t size/*>0*/ MEMSTACK_DEBUG_ARGS_DECL)
 {
@@ -182,7 +183,7 @@ MEMSTACK_EXPORTS MEMSTACK_RETURN_RESTRICT struct memstack_memory *_memstack_push
 				r = dmemstack_block_added(&st->base.d_info, (struct dmemstack_block*)r, orig_size, file, line);
 #endif
 				memstack_assert((size_t)((char*)st->base.bottom - _memstack_item_mem(st->last)) <= st->base.total_size);
-				return (struct memstack_memory*)r;
+				return (memstack_memory_t*)r;
 			}
 		}
 	}
@@ -192,7 +193,7 @@ MEMSTACK_NONNULL_ARGS
 MEMSTACK_MUST_CHECK_RESULT MEMSTACK_RET_BOOL
 static int _memstack_pop_items_(
 	MEMSTACK_INOUT struct memstack *st,
-	MEMSTACK_NOTNULL MEMSTACK_POST_PTR_INVALID struct memstack_memory *mem)
+	MEMSTACK_NOTNULL MEMSTACK_POST_PTR_INVALID memstack_memory_t *mem)
 {
 #ifdef MEMSTACK_DEBUG
 	void *p = DMEMSTACK_BLOCK_FROM_MEM(mem);
@@ -234,7 +235,7 @@ static int _memstack_pop_items_(
 MEMSTACK_NONNULL_ARGS
 MEMSTACK_EXPORTS void _memstack_pop_(
 	MEMSTACK_INOUT struct memstack *st,
-	MEMSTACK_NOTNULL MEMSTACK_POST_PTR_INVALID struct memstack_memory *mem MEMSTACK_DEBUG_ARGS_DECL)
+	MEMSTACK_NOTNULL MEMSTACK_POST_PTR_INVALID memstack_memory_t *mem MEMSTACK_DEBUG_ARGS_DECL)
 {
 #ifdef MEMSTACK_DEBUG
 	void *p = DMEMSTACK_BLOCK_FROM_MEM(mem);
@@ -271,10 +272,10 @@ MEMSTACK_PRE_SATISFIES(aligned_old_size != aligned_new_size)
 MEMSTACK_PRE_SATISFIES(memstack_is_aligned(aligned_old_size))
 MEMSTACK_PRE_SATISFIES(memstack_is_aligned(aligned_new_size))
 MEMSTACK_POST_WRITABLE_BYTE_SIZE(aligned_new_size)
-static MEMSTACK_RETURN_RESTRICT struct memstack_memory *_memstack_repush_item_(
+static MEMSTACK_RETURN_RESTRICT memstack_memory_t *_memstack_repush_item_(
 	MEMSTACK_INOUT struct memstack *st,
 	MEMSTACK_PRE_VALID MEMSTACK_WHEN(return != NULL, MEMSTACK_POST_PTR_INVALID)
-		MEMSTACK_PRE_READABLE_BYTE_SIZE(aligned_old_size) struct memstack_memory *mem,
+		MEMSTACK_PRE_READABLE_BYTE_SIZE(aligned_old_size) memstack_memory_t *mem,
 	MEMSTACK_NONZERO size_t aligned_old_size/*!=aligned_new_size*/,
 	MEMSTACK_NONZERO size_t aligned_new_size MEMSTACK_DEBUG_ARGS_DECL)
 {
@@ -304,9 +305,10 @@ static MEMSTACK_RETURN_RESTRICT struct memstack_memory *_memstack_repush_item_(
 					/* realloc to needed size + space for future allocations */
 					item = memstack_realloc_item(st, prev_item, aligned_new_size MEMSTACK_DEBUG_ARGS_PASS);
 					if (_memstack_unlikely(!item)) {
-						if (free_last)
+						if (free_last) {
 							/* _memstack_free(st->last) was called */
 							memstack_set_last_item(st, prev_item);
+						}
 						return NULL; /* not enough system memory */
 					}
 				}
@@ -329,9 +331,10 @@ static MEMSTACK_RETURN_RESTRICT struct memstack_memory *_memstack_repush_item_(
 						st->base.total_size += aligned_old_size; /* restore */
 					if (_memstack_unlikely(!item)) {
 						st->base.max_total_size -= diff; /* un-adjust statistics */
-						if (free_last)
+						if (free_last) {
 							/* _memstack_free(st->last) was called */
 							memstack_set_last_item(st, prev_item);
+						}
 						return NULL; /* not enough system memory */
 					}
 					item->prev = prev_item;
@@ -348,16 +351,16 @@ static MEMSTACK_RETURN_RESTRICT struct memstack_memory *_memstack_repush_item_(
 				memstack_assert(free_last); /* _memstack_free(st->last) was called */
 				memstack_set_last_item(st, prev_item);
 			}
-			return (struct memstack_memory*)p; /* caller will set st->base.bottom */
+			return (memstack_memory_t*)p; /* caller will set st->base.bottom */
 		}
 	}
 }
 
 MEMSTACK_NONNULL_ARG_1
 MEMSTACK_MUST_CHECK_RESULT MEMSTACK_RET_MAYBENULL MEMSTACK_RET_ALIGNED MEMSTACK_POST_WRITABLE_BYTE_SIZE(new_size)
-MEMSTACK_EXPORTS MEMSTACK_RETURN_RESTRICT struct memstack_memory *_memstack_repush_last__(
+MEMSTACK_EXPORTS MEMSTACK_RETURN_RESTRICT memstack_memory_t *_memstack_repush_last__(
 	MEMSTACK_INOUT struct memstack *st,
-	MEMSTACK_PRE_OPT_VALID MEMSTACK_WHEN(return != NULL, MEMSTACK_POST_PTR_INVALID) struct memstack_memory *mem/*NULL?*/,
+	MEMSTACK_PRE_OPT_VALID MEMSTACK_WHEN(return != NULL, MEMSTACK_POST_PTR_INVALID) memstack_memory_t *mem/*NULL?*/,
 	MEMSTACK_NONZERO size_t new_size/*>0*/ MEMSTACK_DEBUG_ARGS_DECL)
 {
 	memstack_assert(new_size);
@@ -423,7 +426,7 @@ MEMSTACK_EXPORTS MEMSTACK_RETURN_RESTRICT struct memstack_memory *_memstack_repu
 #endif
 			}
 		}
-		return (struct memstack_memory*)p;
+		return (memstack_memory_t*)p;
 	}
 }
 

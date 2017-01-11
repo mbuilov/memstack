@@ -90,8 +90,7 @@ struct memstack_item_base {
 
 #ifdef MEMSTACK_DEBUG
 /* enable/disable memory operations log */
-static inline void memstack_base_enable_log(MEMSTACK_INOUT struct memstack_base *st) {st->d_info.print_mem_log = 1;}
-static inline void memstack_base_disable_log(MEMSTACK_INOUT struct memstack_base *st) {st->d_info.print_mem_log = 0;}
+static inline void memstack_base_enable_log(MEMSTACK_INOUT struct memstack_base *st, int enable) {st->d_info.print_mem_log = enable;}
 
 /* check for access violations on memory blocks allocated from the stack */
 static inline void memstack_base_check(MEMSTACK_IN struct memstack_base *st) {dmemstack_check_blocks(st->d_info.last_block);}

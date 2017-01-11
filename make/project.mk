@@ -33,7 +33,9 @@ WIN_APP_FLAGS += /wd4571# Informational: catch(...) semantics changed since Visu
 ifndef APP_FLAGS
 APP_FLAGS := $(WIN_APP_FLAGS)
 endif
+ifndef WDK
 DDK:=none# not building drivers
+endif
 endif
 
 ifeq (LINUX,$(OS))

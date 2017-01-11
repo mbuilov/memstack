@@ -22,9 +22,8 @@ MEMSTACK_MUST_CHECK_RESULT
 MEMSTACK_RET_MAYBENULL
 MEMSTACK_RETURN_RESTRICT
 MEMSTACK_POST_WRITABLE_BYTE_SIZE(size)
-MEMSTACK_SUCCESS(return != NULL)
 static inline void *_memstack_realloc(
-	MEMSTACK_MAYBENULL MEMSTACK_POST_PTR_INVALID void *mem/*NULL?*/,
+	MEMSTACK_MAYBENULL MEMSTACK_WHEN(return != NULL, MEMSTACK_POST_PTR_INVALID) void *mem/*NULL?*/,
 	MEMSTACK_NONZERO size_t size/*>0*/)
 {
 	return MEMSTACK_REALLOC(mem, size);
@@ -78,11 +77,12 @@ MEMSTACK_NONNULL_ARGS
 MEMSTACK_PRE_SATISFIES(memstack_is_aligned(aligned_mem_size))
 MEMSTACK_PRE_SATISFIES(memstack_is_aligned(aligned_hdr_size))
 MEMSTACK_PRE_SATISFIES(aligned_hdr_size >= sizeof(struct memstack_item_base))
-MEMSTACK_MUST_CHECK_RESULT MEMSTACK_RET_MAYBENULL MEMSTACK_RET_ALIGNED MEMSTACK_SUCCESS(return != NULL)
+MEMSTACK_MUST_CHECK_RESULT MEMSTACK_RET_MAYBENULL MEMSTACK_RET_ALIGNED
 MEMSTACK_POST_WRITABLE_BYTE_SIZE(aligned_hdr_size + aligned_mem_size)
 static MEMSTACK_RETURN_RESTRICT struct memstack_item_base *memstack_base_realloc_item(
 	MEMSTACK_IN const struct memstack_base *st,
-	MEMSTACK_NOTNULL MEMSTACK_POST_PTR_INVALID MEMSTACK_PRE_READABLE_BYTE_SIZE(sizeof(size_t)/*aligned_hdr_size*/)
+	MEMSTACK_NOTNULL MEMSTACK_WHEN(return != NULL, MEMSTACK_POST_PTR_INVALID)
+		MEMSTACK_PRE_READABLE_BYTE_SIZE(sizeof(size_t)/*aligned_hdr_size*/)
 		struct memstack_item_base *last/*item size stored at head of item*/,
 	MEMSTACK_NONZERO size_t aligned_mem_size,
 	MEMSTACK_NONZERO unsigned aligned_hdr_size MEMSTACK_DEBUG_ARGS_DECL)

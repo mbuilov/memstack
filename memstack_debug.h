@@ -82,7 +82,7 @@ struct memstack_debug_info {
 	size_t mem_usage;                   /* current memory usage */
 	size_t peak_mem_usage;              /* peak of total memory allocations */
 	size_t block_number;                /* next allocated memory block number */
-	int print_mem_log;                  /* set to 1 to enable push/pop/repush operations log, 0 - to disable */
+	int print_mem_log;                  /* set to non-zero to enable push/pop/repush operations log, 0 - to disable */
 	struct dmemstack_block *last_block; /* last allocated block of memory in stack */
 };
 

@@ -210,7 +210,7 @@ static inline size_t _memstack_diff(size_t a, size_t b)
 {
 #ifdef MEMSTACK_DEBUG
 	if (a < b)
-		return ((size_t)~(size_t)0 & ~(b - a - 1));
+		return (size_t)~(size_t)0 - (b - a - 1u);
 #endif
 	return a - b;
 }

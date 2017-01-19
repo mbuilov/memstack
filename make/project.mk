@@ -115,8 +115,9 @@ endif
 PRODUCT_NAMES_H := vers.h
 
 # version info for a dll
-VENDOR_NAME           := "Michael M. Builov"
-PRODUCT_NAME          := "Memory Stack LGPLv2.1+ library"
-VENDOR_COPYRIGHT      := "Copyright (C) 2008-2017 Michael M. Builov, https://github.com/mbuilov/memstack"
+VENDOR_NAME           := Michael M. Builov
+VENDOR_URL            := https://github.com/mbuilov/memstack
+PRODUCT_NAME          := Memory Stack LGPLv2.1+ library
+VENDOR_COPYRIGHT      := Copyright (C) 2008-2017 $(VENDOR_NAME), $(VENDOR_URL)
 PRODUCT_VERSION_MAJOR := 1
 PRODUCT_VERSION_MINOR := 0

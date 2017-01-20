@@ -4,8 +4,11 @@ ifneq ($(filter distclean,$(MAKECMDGOALS)),)
 distclean:
 	$(call RM,$(CLOBBER_DIRS))
 else
+check: all
+	$(MAKE) -C test
+	$(BIN_DIR)/memstack_test
 install: all
-include $(TOP)/make/$(OS)/install.mk
+uninstall:
 TO_MAKE := version memstack.mk
 include $(MTOP)/parallel.mk
 endif

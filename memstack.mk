@@ -19,16 +19,16 @@ ifeq (LINUX,$(OS))
 include $(MTOP)/LINUX/pc.mk
 include $(MTOP)/LINUX/la.mk
 
-define MEMSTACK_DESC
+define PC_MEMSTACK_DESC
 memory stack-allocation helper library
 endef
 
-define MEMSTACK_COMMENT
+define PC_MEMSTACK_COMMENT
 Author:  $(VENDOR_NAME)
-License: LGPLv2+
+License: LGPLv2.1+
 endef
 
-$(call PKGCONFIG_RULE,$(DLL),$(SOVER),$(MEMSTACK_DESC),$(MEMSTACK_COMMENT),$(VENDOR_URL))
+$(call PKGCONFIG_RULE,$(DLL),$(SOVER),$(PC_MEMSTACK_DESC),$(PC_MEMSTACK_COMMENT),$(VENDOR_URL))
 $(call LIBTOOL_LA_RULE,$(DLL),$(SOVER),$(LIB))
 
 endif # LINUX

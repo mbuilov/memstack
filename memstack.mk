@@ -37,6 +37,7 @@ $(DEFINE_TARGETS)
 
 ifeq (LINUX,$(OS))
 
+install_libmemstack uninstall_libmemstack: all
 install_libmemstack uninstall_libmemstack: HEADERS := memstack_base.h memstack_comn.h memstack_config.h memstack_debug.h memstack.h
 install_libmemstack uninstall_libmemstack: LIB     := $(LIB)
 install_libmemstack uninstall_libmemstack: DLL     := $(DLL)
@@ -50,8 +51,8 @@ install_libmemstack:
 	$(INSTALL) -m 755 $(LIB_DIR)/lib$(DLL).la '$(DESTDIR)$(LIBDIR)'
 	$(INSTALL) -m 755 $(LIB_DIR)/lib$(DLL).so.$(SOVER) '$(DESTDIR)$(LIBDIR)'
 	ln -sf$(if $(VERBOSE),v) lib$(DLL).so.$(SOVER) '$(DESTDIR)$(LIBDIR)/lib$(DLL).so'
-	$(INSTALL) -d '$(DESTDIR)$(PKG_CONFIG)'
-	$(INSTALL) -m 644 $(LIB_DIR)/lib$(DLL).pc '$(DESTDIR)$(PKG_CONFIG)'
+	$(INSTALL) -d '$(DESTDIR)$(PKG_CONFIG_DIR)'
+	$(INSTALL) -m 644 $(LIB_DIR)/lib$(DLL).pc '$(DESTDIR)$(PKG_CONFIG_DIR)'
 	$(LDCONFIG) -n$(if $(VERBOSE),v) '$(DESTDIR)$(LIBDIR)'
 
 uninstall_libmemstack:
@@ -61,7 +62,7 @@ uninstall_libmemstack:
   '$(DESTDIR)$(LIBDIR)/lib$(DLL).la' \
   '$(DESTDIR)$(LIBDIR)/lib$(DLL).so' \
   '$(DESTDIR)$(LIBDIR)/lib$(DLL).so.$(SOVER)' \
-  '$(DESTDIR)$(PKG_CONFIG)/lib$(DLL).pc'
+  '$(DESTDIR)$(PKG_CONFIG_DIR)/lib$(DLL).pc'
 	$(LDCONFIG) -n$(if $(VERBOSE),v) '$(DESTDIR)$(LIBDIR)'
 
 .PHONY: install_libmemstack uninstall_libmemstack

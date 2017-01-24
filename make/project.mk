@@ -43,10 +43,13 @@ ifndef APP_FLAGS
   APP_FLAGS :=
   DEF_SHARED_LIBS :=
   DEF_EXE_FLAGS :=
+  DEF_SO_FLAGS := -shared -Wl,--no-undefined
   ifdef DEBUG
     APP_FLAGS += -fno-common -fno-omit-frame-pointer
     ifndef NO_STACK_PROTECTOR
-      APP_FLAGS += -fstack-protector-all
+      APP_FLAGS     += -fstack-protector-all
+      DEF_EXE_FLAGS += -fstack-protector-all
+      DEF_SO_FLAGS  += -fstack-protector-all
     endif # NO_STACK_PROTECTOR
     APP_FLAGS += $(if $(filter GCC%,$(COMPILER_TYPE)),-ggdb3,-g)
     SANITIZE :=
@@ -62,7 +65,7 @@ ifndef APP_FLAGS
         SANITIZE += -fsanitize=address
         SANITIZE += -fsanitize=undefined
         SANITIZE += -fsanitize=integer
-        DEF_SO_FLAGS := -shared #-Wl,--no-undefined
+        DEF_SO_FLAGS := $(filter-out %--no-undefined,$(DEF_SO_FLAGS))
         DEF_EXE_FLAGS += $(SANITIZE)
       endif # CLANG
     endif # NO_SANITIZE
@@ -75,7 +78,7 @@ ifndef APP_FLAGS
     ifneq ($(filter GCC5 GCC6,$(COMPILER_TYPE)),)
       DEF_SHARED_FLAGS := -Wl,--warn-common -Wl,--no-demangle $(SANITIZE) $(COVERAGE)
     else ifneq ($(filter CLANG,$(COMPILER_TYPE)),)
-      DEF_SO_FLAGS := -shared #-Wl,--no-undefined
+      DEF_SO_FLAGS := $(filter-out %--no-undefined,$(DEF_SO_FLAGS))
       DEF_EXE_FLAGS += $(COVERAGE)
     endif # CLANG
     APP_FLAGS += $(SANITIZE) $(COVERAGE)

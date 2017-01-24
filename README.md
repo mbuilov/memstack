@@ -1,5 +1,5 @@
 # memstack
-simple memory stack allocation library
+memory stack allocation library
 
 In C, it's often hard to track memory allocations and avoid memory leaks.
 To simplify this task, it may be useful to allocate memory via special object and, when appropriate, free all allocations by one call.

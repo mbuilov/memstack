@@ -20,12 +20,12 @@ include $(MTOP)/LINUX/pc.mk
 include $(MTOP)/LINUX/la.mk
 
 define PC_MEMSTACK_DESC
-memory stack-allocation helper library
+memory stack allocation library
 endef
 
 define PC_MEMSTACK_COMMENT
 Author:  $(VENDOR_NAME)
-License: LGPLv2.1+
+License: LGPL version 2.1 or any later version
 endef
 
 $(call PKGCONFIG_RULE,$(DLL),$(SOVER),$(PC_MEMSTACK_DESC),$(PC_MEMSTACK_COMMENT),$(VENDOR_URL))

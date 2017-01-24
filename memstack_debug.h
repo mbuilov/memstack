@@ -2,9 +2,9 @@
 #define MEMSTACK_DEBUG_H_INCLUDED
 
 /*******************************************************************************
-* Memory Stack LGPLv2.1+ library (memstack) - stack allocation library
+* Memory Stack allocation library
 * Copyright (C) 2008-2017 Michael M. Builov, https://github.com/mbuilov/memstack
-* Licensed under LGPLv2.1+, see COPYING
+* Licensed under LGPL version 2.1 or any later version, see COPYING
 *******************************************************************************/
 
 /* memstack_debug.h */

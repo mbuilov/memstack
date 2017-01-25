@@ -45,10 +45,8 @@ install_libmemstack uninstall_libmemstack: DLL   := $(DLL)
 install_libmemstack uninstall_libmemstack: SOVER := $(SOVER)
 install_libmemstack: all
 install_libmemstack: HEADERS := \
-  memstack_base.inl \
   memstack_base.h \
   memstack_comn.h \
-  memstack_config.h \
   memstack_debug.h \
   memstack.h
 

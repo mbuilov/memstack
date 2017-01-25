@@ -1,5 +1,6 @@
 include $(dir $(lastword $(MAKEFILE_LIST)))../top.mk
 include $(MTOP)/c.mk
+include $(MTOP)/ctest.mk
 
 EXE     := memstack_test_c
 INCLUDE := ..
@@ -12,21 +13,11 @@ else
 LIBS    := memstack
 endif
 
-ifneq ($(filter check,$(MAKECMDGOALS)),)
-$(call ADD_GENERATED,$(BIN_DIR)/$(EXE).out)
-$(BIN_DIR)/$(EXE).out: $(call FORM_TRG,EXE)
-	$(call SUP,TEST,$@)$< 2> $@
-endif
-
+$(DO_TEST_EXE)
 $(call MAKE_CONTINUE,INCLUDE DEFINES LIBS)
 
 EXE     := memstack_test_cpp
 SRC     := memstack_test.cpp
 
-ifneq ($(filter check,$(MAKECMDGOALS)),)
-$(call ADD_GENERATED,$(BIN_DIR)/$(EXE).out)
-$(BIN_DIR)/$(EXE).out: $(call FORM_TRG,EXE)
-	$(call SUP,TEST,$@)$< 2> $@
-endif
-
+$(DO_TEST_EXE)
 $(DEFINE_TARGETS)

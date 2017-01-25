@@ -28,6 +28,8 @@ Author:  $(VENDOR_NAME)
 License: LGPL version 2.1 or any later version
 endef
 
+PC_CFLAGS := -I$${includedir}/memstack
+
 $(call PKGCONFIG_RULE,$(DLL),$(SOVER),$(PC_DESC),$(PC_COMMENT),$(VENDOR_URL))
 $(call LIBTOOL_LA_RULE,$(DLL),$(SOVER),$(LIB))
 
@@ -38,14 +40,19 @@ $(DEFINE_TARGETS)
 ifeq (LINUX,$(OS))
 
 install_libmemstack uninstall_libmemstack: all
-install_libmemstack uninstall_libmemstack: HEADERS := memstack_base.h memstack_comn.h memstack_config.h memstack_debug.h memstack.h
 install_libmemstack uninstall_libmemstack: LIB     := $(LIB)
 install_libmemstack uninstall_libmemstack: DLL     := $(DLL)
 install_libmemstack uninstall_libmemstack: SOVER   := $(SOVER)
+install_libmemstack uninstall_libmemstack: HEADERS := \
+  memstack_base.h \
+  memstack_comn.h \
+  memstack_config.h \
+  memstack_debug.h \
+  memstack.h
 
 install_libmemstack:
-	$(INSTALL) -d '$(DESTDIR)$(PREFIX)/include'
-	$(INSTALL) -m 644 $(addprefix $(TOP)/,$(HEADERS)) '$(DESTDIR)$(PREFIX)/include'
+	$(INSTALL) -d '$(DESTDIR)$(PREFIX)/include/memstack'
+	$(INSTALL) -m 644 $(addprefix $(TOP)/,$(HEADERS)) '$(DESTDIR)$(PREFIX)/include/memstack'
 	$(INSTALL) -d '$(DESTDIR)$(LIBDIR)'
 	$(INSTALL) -m 644 $(LIB_DIR)/lib$(LIB).a '$(DESTDIR)$(LIBDIR)'
 	$(INSTALL) -m 755 $(LIB_DIR)/lib$(DLL).la '$(DESTDIR)$(LIBDIR)'
@@ -56,8 +63,8 @@ install_libmemstack:
 	$(LDCONFIG) -n$(if $(VERBOSE),v) '$(DESTDIR)$(LIBDIR)'
 
 uninstall_libmemstack:
-	rm -f$(if $(VERBOSE),v) \
-  $(foreach h,$(HEADERS),'$(DESTDIR)$(PREFIX)/include/$h') \
+	rm -rf$(if $(VERBOSE),v) \
+  '$(DESTDIR)$(PREFIX)/include/memstack' \
   '$(DESTDIR)$(LIBDIR)/lib$(LIB).a' \
   '$(DESTDIR)$(LIBDIR)/lib$(DLL).la' \
   '$(DESTDIR)$(LIBDIR)/lib$(DLL).so' \

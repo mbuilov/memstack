@@ -3,8 +3,8 @@ include $(MTOP)/c.mk
 include $(MTOP)/ctest.mk
 
 EXE     := memstack_test_c
-INCLUDE := ..
 SRC     := memstack_test.c
+INCLUDE := ..
 
 ifdef DEBUG
 DEFINES := MEMSTACK_DEBUG

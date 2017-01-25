@@ -10,7 +10,7 @@
 /* memstack_debug.h */
 
 #ifndef MEMSTACK_COMN_H_INCLUDED
-#error do not #include this file directly, #include "memstack_comn.h" instead
+#error do not #include this file directly, #include "memstack/memstack_comn.h" instead
 #endif
 
 #ifdef __cplusplus

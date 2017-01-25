@@ -1,9 +1,10 @@
-include $(dir $(lastword $(MAKEFILE_LIST)))top.mk
+include $(dir $(lastword $(MAKEFILE_LIST)))../top.mk
 include $(MTOP)/c.mk
 
 LIB     := memstack
 DLL     := memstack
 SRC     := memstack.c
+INCLUDE := ..
 SOVER   := 1
 DLL_DEFINES := MEMSTACK_EXPORTS=$(DLL_EXPORTS_DEFINE)
 
@@ -39,11 +40,12 @@ $(DEFINE_TARGETS)
 
 ifeq (LINUX,$(OS))
 
-install_libmemstack uninstall_libmemstack: all
-install_libmemstack uninstall_libmemstack: LIB     := $(LIB)
-install_libmemstack uninstall_libmemstack: DLL     := $(DLL)
-install_libmemstack uninstall_libmemstack: SOVER   := $(SOVER)
-install_libmemstack uninstall_libmemstack: HEADERS := \
+install_libmemstack uninstall_libmemstack: LIB   := $(LIB)
+install_libmemstack uninstall_libmemstack: DLL   := $(DLL)
+install_libmemstack uninstall_libmemstack: SOVER := $(SOVER)
+install_libmemstack: all
+install_libmemstack: HEADERS := \
+  memstack_base.inl \
   memstack_base.h \
   memstack_comn.h \
   memstack_config.h \
@@ -52,7 +54,7 @@ install_libmemstack uninstall_libmemstack: HEADERS := \
 
 install_libmemstack:
 	$(INSTALL) -d '$(DESTDIR)$(PREFIX)/include/memstack'
-	$(INSTALL) -m 644 $(addprefix $(TOP)/,$(HEADERS)) '$(DESTDIR)$(PREFIX)/include/memstack'
+	$(INSTALL) -m 644 $(addprefix $(TOP)/memstack/,$(HEADERS)) '$(DESTDIR)$(PREFIX)/include/memstack'
 	$(INSTALL) -d '$(DESTDIR)$(LIBDIR)'
 	$(INSTALL) -m 644 $(LIB_DIR)/lib$(LIB).a '$(DESTDIR)$(LIBDIR)'
 	$(INSTALL) -m 755 $(LIB_DIR)/lib$(DLL).la '$(DESTDIR)$(LIBDIR)'

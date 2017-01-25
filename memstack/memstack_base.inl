@@ -6,8 +6,8 @@
 
 /* memstack_base.inl */
 
-#include "memstack_config.h"
-#include "memstack_base.h"
+#include "memstack/memstack_config.h"
+#include "memstack/memstack_base.h"
 
 MEMSTACK_MUST_CHECK_RESULT
 MEMSTACK_RET_MAYBENULL

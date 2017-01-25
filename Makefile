@@ -6,7 +6,7 @@ distclean:
 	$(call RM,$(CLOBBER_DIRS))
 else
 
-TO_MAKE := memstack.mk
+TO_MAKE := src
 
 ifneq ($(filter WINXX,$(OS)),)
 TO_MAKE += version

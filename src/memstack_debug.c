@@ -8,8 +8,8 @@
 
 #ifdef MEMSTACK_DEBUG
 
-#include "memstack_config.h"
-#include "memstack_comn.h" /* #includes "memstack_debug.h" */
+#include "memstack/memstack_config.h"
+#include "memstack/memstack_comn.h" /* #includes "memstack/memstack_debug.h" */
 
 static inline void dmemstack_set_mem_mask(
 	MEMSTACK_OUT_WRITES_ALL(DMEMSTACK_TEST_BYTES_COUNT) char s[DMEMSTACK_TEST_BYTES_COUNT],

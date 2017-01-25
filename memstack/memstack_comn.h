@@ -159,7 +159,7 @@ typedef int _check_MEMSTACK_MEM_ALIGN_SIZE_no_too_big[1-2*((MEMSTACK_MEM_ALIGN_S
 #endif /* !memstack_assert */
 
 #ifdef MEMSTACK_DEBUG
-#include "memstack_debug.h"
+#include "memstack/memstack_debug.h"
 #endif
 
 #if defined __GNUC__ && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3))

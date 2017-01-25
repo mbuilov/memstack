@@ -9,7 +9,7 @@
 
 /* memstack.h */
 
-#include "memstack_base.h"
+#include "memstack/memstack_base.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "memstack.h"
+#include "memstack/memstack.h"
 
 #define ASSERT(c) do { \
 	int __c = !!(c); \

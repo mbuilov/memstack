@@ -6,8 +6,8 @@
 
 /* memstack.c */
 
-#include "memstack_base.inl"
-#include "memstack.h"
+#include "memstack/memstack_base.inl"
+#include "memstack/memstack.h"
 
 MEMSTACK_NONNULL_ARGS
 MEMSTACK_EXPORTS void _memstack_destroy_(

@@ -6,7 +6,11 @@ distclean:
 	$(call RM,$(CLOBBER_DIRS))
 else
 
-TO_MAKE := version memstack.mk
+TO_MAKE := memstack.mk
+
+ifneq ($(filter WINXX,$(OS)),)
+TO_MAKE += version
+endif
 
 ifneq ($(filter check tests,$(MAKECMDGOALS)),)
 check tests: all

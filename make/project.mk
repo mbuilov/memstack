@@ -114,7 +114,7 @@ ifeq (SOLARIS,$(OS))
 endif
 
 # header generated in $(TOP)/version/version.mk
-# $(PRODUCT_NAMES_H) - used in $(MTOP)/WINXX/make_stdres.mk
+# $(PRODUCT_NAMES_H) - used in $(MTOP)/WINXX/cres.mk
 PRODUCT_NAMES_H := vers.h
 
 # version info for a dll

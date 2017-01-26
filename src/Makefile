@@ -38,19 +38,21 @@ endif # LINUX
 
 $(DEFINE_TARGETS)
 
-ifeq (LINUX,$(OS))
-
 install_libmemstack uninstall_libmemstack: LIB   := $(LIB)
 install_libmemstack uninstall_libmemstack: DLL   := $(DLL)
 install_libmemstack uninstall_libmemstack: SOVER := $(SOVER)
-install_libmemstack: all
+
 install_libmemstack: HEADERS := \
   memstack_base.h \
   memstack_comn.h \
   memstack_debug.h \
   memstack.h
 
-install_libmemstack:
+install_libmemstack: $(call FORM_TRG,LIB) $(call FORM_TRG,DLL)
+
+ifeq (LINUX,$(OS))
+
+install_libmemstack: $(LIB_DIR)/lib$(DLL).so.$(SOVER) $(LIB_DIR)/lib$(DLL).la  $(LIB_DIR)/lib$(DLL).pc
 	$(INSTALL) -d '$(DESTDIR)$(PREFIX)/include/memstack'
 	$(INSTALL) -m 644 $(addprefix $(TOP)/memstack/,$(HEADERS)) '$(DESTDIR)$(PREFIX)/include/memstack'
 	$(INSTALL) -d '$(DESTDIR)$(LIBDIR)'
@@ -72,6 +74,15 @@ uninstall_libmemstack:
   '$(DESTDIR)$(PKG_CONFIG_DIR)/lib$(DLL).pc'
 	$(LDCONFIG) -n$(if $(VERBOSE),v) '$(DESTDIR)$(LIBDIR)'
 
-.PHONY: install_libmemstack uninstall_libmemstack
+else ifeq (WINXX,$(OS))
 
-endif # LINUX
+install_libmemstack:
+	$(if $(DESTDIR),,$(error DESTDIR - installation directory not defined))
+	if not exist "$(DESTDIR)" mkdir "$(DESTDIR)"
+	if not exist "$(DESTDIR)\include" mkdir "$(DESTDIR)\include"
+	if not exist "$(DESTDIR)\include\memstack" mkdir "$(DESTDIR)\include\memstack"
+	$(foreach f,$(HEADERS),copy /y $(call ospath,$(TOP)/memstack/$f) "$(DESTDIR)\include\memstack"$(newline))
+
+endif # WINXX
+
+.PHONY: install_libmemstack uninstall_libmemstack

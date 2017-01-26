@@ -31,9 +31,9 @@ PKG_CONFIG_DIR  ?= $(LIBDIR)/pkgconfig
 INSTALL         ?= install
 LDCONFIG        ?= /sbin/ldconfig
 
+endif # LINUX
+
 install: install_libmemstack
 uninstall: uninstall_libmemstack
-
-endif # LINUX
 
 endif # !distclean

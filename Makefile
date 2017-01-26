@@ -31,7 +31,11 @@ PKG_CONFIG_DIR  ?= $(LIBDIR)/pkgconfig
 INSTALL         ?= install
 LDCONFIG        ?= /sbin/ldconfig
 
-endif # LINUX
+else ifeq (WINXX,$(OS))
+
+LIBDIR ?= $(PREFIX)\lib
+
+endif # WINXX
 
 install: install_libmemstack
 uninstall: uninstall_libmemstack

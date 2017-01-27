@@ -72,23 +72,21 @@ uninstall_libmemstack:
 
 else ifeq (WINXX,$(OS))
 
-install_libmemstack: $(if $(PREFIX),,$(error PREFIX - installation directory not defined))
-
 $(DESTDIR)$(PREFIX)/include/memstack: | $(DESTDIR)$(LIBDIR)
 $(DESTDIR)$(PREFIX)/include/memstack $(DESTDIR)$(LIBDIR):
 	$(call MKDIR,$@)
 
 install_libmemstack: | $(DESTDIR)$(PREFIX)/include/memstack $(DESTDIR)$(LIBDIR)
 	$(foreach f,$(HEADERS),$(call CP,$(TOP)/memstack/$f,"$(DESTDIR)$(PREFIX)/include/memstack")$(newline))
-	$(call CP,$(LIB_DIR)/$(LIB).$(LIB_SUFFIX),"$(DESTDIR)$(LIBDIR)")
-	$(call CP,$(IMP_DIR)/$(DLL).$(IMP_SUFFIX),"$(DESTDIR)$(LIBDIR)")
-	$(call CP,$(IMP_DIR)/$(DLL).$(DLL_SUFFIX),"$(DESTDIR)$(LIBDIR)")
+	$(call CP,$(LIB_DIR)/$(LIB)$(LIB_SUFFIX),"$(DESTDIR)$(LIBDIR)")
+	$(call CP,$(IMP_DIR)/$(DLL)$(IMP_SUFFIX),"$(DESTDIR)$(LIBDIR)")
+	$(call CP,$(DLL_DIR)/$(DLL)$(DLL_SUFFIX),"$(DESTDIR)$(LIBDIR)")
 
 uninstall_libmemstack:
 	$(call DEL_DIR,"$(DESTDIR)$(PREFIX)/include/memstack")
-	$(call DEL,"$(DESTDIR)$(LIBDIR)/$(LIB).$(LIB_SUFFIX)")
-	$(call DEL,"$(DESTDIR)$(LIBDIR)/$(DLL).$(IMP_SUFFIX)")
-	$(call DEL,"$(DESTDIR)$(LIBDIR)/$(DLL).$(DLL_SUFFIX)")
+	$(call DEL,"$(DESTDIR)$(LIBDIR)/$(LIB)$(LIB_SUFFIX)")
+	$(call DEL,"$(DESTDIR)$(LIBDIR)/$(DLL)$(IMP_SUFFIX)")
+	$(call DEL,"$(DESTDIR)$(LIBDIR)/$(DLL)$(DLL_SUFFIX)")
 
 endif # WINXX
 

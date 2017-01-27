@@ -26,52 +26,6 @@ struct memstack - an example of such special object.
 2. [memstack_print](#print-current-memstack-allocations)
 3. [memstack_enable_log](#enable-logging-of-memstack-allocations)
 
-## Installing
-
-1. Get clean-build build system
-```
-git clone https://github.com/mbuilov/clean-build
-```
-2. For windows, get Gnu Make:
-```
-git clone https://github.com/mbuilov/gnumake-windows
-```
-3. Build library
-3.1 On Linux:
-```
-$ make MTOP=/home/user/clean-build OS=LINUX CPU=x86_64 TARGET=MEMSTACKD
-```
-3.2 On Windows:
-```
-C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 TARGET=MEMSTACKD OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0"
-```
-If make target is not specified, default target 'all' (compile the library) will be built.
-
-Tip: there are predefined targets:
-* test      - to build library and tests
-* check     - to build library and tests, then run tests
-* clean     - to delete built artifacts, except created directories
-* distclean - to delete all artifacts, including created directories
-
-4. Install library and interface headers
-4.1 On Linux:
-possibly as root, do
-```
-$ make MTOP=/home/user/clean-build OS=LINUX CPU=x86_64 TARGET=MEMSTACK install
-```
-4.2 On Windows:
-```
-C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 TARGET=MEMSTACK OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0" PREFIX=C:\dst install
-```
-Headers are installed to $(PREFIX)/include, libraries - to $(PREFIX)/lib.
-
-Tip.
-define PREFIX to override default install location - /usr/local
-define LIBDIR to override default libraries install location - $(PREFIX)/lib
-define DESTDIR to specify prefix to $(PREFIX) - to make path to temporary install location.
-
-Tip: there is one more predefined target:
-* uninstall - to delete installed files. Note: installed directories are not deleted.
 
 #### Init memstack structure
 ```
@@ -80,7 +34,7 @@ void memstack_init(struct memstack *st);
 Parameters:
 - ```st```  - memstack structure to initialize
 
-<i>Example:</i>
+*Example:*
 ```
 struct memstack st;
 memstack_init(&st);
@@ -107,13 +61,13 @@ Parameters:
 - ```st```   - memstack structure
 - ```size``` - number of bytes to allocate, must be non-zero
 
-<b>Returns:</b> pointer to abstract structure ```memstack_memory_t``` or ```NULL``` if allocation failed.
+**Returns:** pointer to abstract structure ```memstack_memory_t``` or ```NULL``` if allocation failed.
 
 Returned pointer will be suitably aligned for any structure, so may be casted to any poiner type.
 
 Note: ```memstack_push()``` may not call system ```malloc()``` if there is enough free space in last allocated internal memstack memory block.
 
-<i>Example:</i>
+*Example:*
 ```
 extern struct memstack *st;
 struct my_struct *m = (struct my_struct*)memstack_push(st, sizeof(*m));
@@ -133,7 +87,7 @@ It is possible to pop multiple sequential allocations by one call - just pop the
 
 Note: ```memstack_pop()``` may not call system ```free()``` for the last popped internal memstack memory block.
 
-<i>Example:</i>
+*Example:*
 ```
 extern struct memstack *st;
 extern struct my_struct *m;
@@ -151,11 +105,11 @@ Parameters:
 
 If ```mem``` is ```NULL```, then acts like ```memstack_push()```.
 
-<b>Returns:</b> pointer to abstract structure ```memstack_memory_t``` or ```NULL``` if failed to expand existing allocation or create new allocation.
+**Returns:** pointer to abstract structure ```memstack_memory_t``` or ```NULL``` if failed to expand existing allocation or create new allocation.
 
 Returned pointer will be suitably aligned for any structure, so may be casted to any poiner type.
 
-<i>Example:</i>
+*Example:*
 ```
 extern struct memstack *st;
 extern void *m;
@@ -180,7 +134,7 @@ memstack_bottom_t *memstack_get_bottom(struct memstack *st);
 Parameters:
 - ```st```  - memstack structure
 
-<b>Returns:</b> pointer to abstract structure ```memstack_bottom_t``` for passing it to ```memstack_reset()```.
+**Returns:** pointer to abstract structure ```memstack_bottom_t``` for passing it to ```memstack_reset()```.
 
 Returned pointer must not be checked, it may have any value, even ```NULL```.
 
@@ -200,7 +154,7 @@ All memory allocated in memstack after ```pos``` was taken is popped.
 
 If ```pos``` is ```NULL```, then acts like ```memstack_cleanup()```.
 
-<i>Example:</i>
+*Example:*
 ```
 extern struct memstack *st;
 memstack_bottom_t *pos = memstack_get_bottom(st);
@@ -218,11 +172,11 @@ Parameters:
 - ```st```   - memstack structure
 - ```size``` - last allocation size, in bytes, must be non-zero
 
-<b>Returns:</b> pointer to abstract structure ```memstack_memory_t``` that was returned by last ```memstack_push()/memstack_repush_last()``` call.
+**Returns:** pointer to abstract structure ```memstack_memory_t``` that was returned by last ```memstack_push()/memstack_repush_last()``` call.
 
 Note: ```size``` must be exactly the same one that was passed to last ```memstack_push()/memstack_repush_last()``` call.
 
-<i>Example:</i>
+*Example:*
 ```
 extern struct memstack *st;
 memstack_memory_t *m1 = memstack_push(st, 100);
@@ -230,6 +184,7 @@ memstack_memory_t *m1 = memstack_push(st, 100);
 memstack_memory_t *m2 = memstack_get_last_mem(st, 100);
 assert(m1 == m2);
 ```
+
 
 #### Check red zones of memstack allocations
 ```
@@ -258,3 +213,62 @@ Parameters:
 - ```enable``` - non-zero to enable logging, 0 - to disable
 
 Note: allocations are written to ```stderr```
+
+
+## Building
+
+1. Get clean-build build system:
+
+    ```
+    git clone https://github.com/mbuilov/clean-build
+    ```
+2. For windows, get Gnu Make:
+
+    ```
+    git clone https://github.com/mbuilov/gnumake-windows
+    ```
+3. Build library
+
+    3.1 On Linux:
+    ```
+    $ make MTOP=/home/user/clean-build OS=LINUX CPU=x86_64 TARGET=MEMSTACK
+    ```
+
+    3.2 On Windows:
+    ```
+    C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 TARGET=MEMSTACK OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0"
+    ```
+
+    _**Tip**_:
+    to view other possible values of OS, CPU or TARGET variables, undefine them.
+
+    If make target is not specified, default target _all_ (compile the library) will be built.
+
+    _**Tip**_: there are predefined targets:
+    * test      - to build library and tests
+    * check     - to build library and tests, then run tests
+    * clean     - to delete built artifacts, except created directories
+    * distclean - to delete all artifacts, including created directories
+
+4. Install library with interface headers
+
+    4.1 On Linux:
+    possibly as root, do
+    ```
+    $ make MTOP=/home/user/clean-build OS=LINUX CPU=x86_64 TARGET=MEMSTACK install
+    ```
+
+    4.2 On Windows:
+    ```
+    C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 TARGET=MEMSTACK OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0" PREFIX=C:\dst install
+    ```
+
+    Headers are installed to $(PREFIX)/include, libraries - to $(PREFIX)/lib.
+
+    _**Tips**_.
+    - define variable PREFIX to override default install location - /usr/local
+    - define variable LIBDIR to override default libraries install location - $(PREFIX)/lib
+    - define variable DESTDIR to add prefix to $(PREFIX) - to make path to temporary install location.
+
+    _**Tip**_: there is one more predefined target:
+    * uninstall - to delete installed files. Note: installed directories are not deleted.

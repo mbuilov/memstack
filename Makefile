@@ -35,6 +35,13 @@ else ifeq (WINXX,$(OS))
 
 LIBDIR ?= $(PREFIX)\lib
 
+install_check_prefix:
+	$(if $(PREFIX),,$(error PREFIX - installation directory not defined))
+
+install uninstall: install_check_prefix
+
+.PHONY: install_check_prefix
+
 endif # WINXX
 
 install: install_libmemstack

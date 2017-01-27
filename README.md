@@ -26,6 +26,52 @@ struct memstack - an example of such special object.
 2. [memstack_print](#print-current-memstack-allocations)
 3. [memstack_enable_log](#enable-logging-of-memstack-allocations)
 
+## Installing
+
+1. Get clean-build build system
+```
+git clone https://github.com/mbuilov/clean-build
+```
+2. For windows, get Gnu Make:
+```
+git clone https://github.com/mbuilov/gnumake-windows
+```
+3. Build library
+3.1 On Linux:
+```
+$ make MTOP=/home/user/clean-build OS=LINUX CPU=x86_64 TARGET=MEMSTACKD
+```
+3.2 On Windows:
+```
+C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 TARGET=MEMSTACKD OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0"
+```
+If make target is not specified, default target 'all' (compile the library) will be built.
+
+Tip: there are predefined targets:
+* test      - to build library and tests
+* check     - to build library and tests, then run tests
+* clean     - to delete built artifacts, except created directories
+* distclean - to delete all artifacts, including created directories
+
+4. Install library and interface headers
+4.1 On Linux:
+possibly as root, do
+```
+$ make MTOP=/home/user/clean-build OS=LINUX CPU=x86_64 TARGET=MEMSTACK install
+```
+4.2 On Windows:
+```
+C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 TARGET=MEMSTACK OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0" PREFIX=C:\dst install
+```
+Headers are installed to $(PREFIX)/include, libraries - to $(PREFIX)/lib.
+
+Tip.
+define PREFIX to override default install location - /usr/local
+define LIBDIR to override default libraries install location - $(PREFIX)/lib
+define DESTDIR to specify prefix to $(PREFIX) - to make path to temporary install location.
+
+Tip: there is one more predefined target:
+* uninstall - to delete installed files. Note: installed directories are not deleted.
 
 #### Init memstack structure
 ```

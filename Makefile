@@ -17,11 +17,6 @@ check tests: all
 TO_MAKE += test
 endif
 
-include $(MTOP)/parallel.mk
-
-install: all
-uninstall:
-
 ifeq (LINUX,$(OS))
 
 PREFIX          ?= /usr/local
@@ -46,5 +41,7 @@ endif # WINXX
 
 install: install_libmemstack
 uninstall: uninstall_libmemstack
+
+include $(MTOP)/parallel.mk
 
 endif # !distclean

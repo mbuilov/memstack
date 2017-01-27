@@ -72,11 +72,14 @@ uninstall_libmemstack:
 
 else ifeq (WINXX,$(OS))
 
-$(DESTDIR)$(PREFIX)/include/memstack: | $(DESTDIR)$(LIBDIR)
-$(DESTDIR)$(PREFIX)/include/memstack $(DESTDIR)$(LIBDIR):
-	$(call MKDIR,$@)
+DST_INC_DIR := $(subst $(space),\$(space),$(DESTDIR)$(PREFIX)/include/memstack)
+DST_LIB_DIR := $(subst $(space),\$(space),$(DESTDIR)$(LIBDIR))
 
-install_libmemstack: | $(DESTDIR)$(PREFIX)/include/memstack $(DESTDIR)$(LIBDIR)
+$(DST_INC_DIR): | $(DST_LIB_DIR)
+$(DST_INC_DIR) $(DST_LIB_DIR):
+	$(call MKDIR,"$(subst \ , ,$@)")
+
+install_libmemstack: | $(DST_INC_DIR) $(DST_LIB_DIR)
 	$(foreach f,$(HEADERS),$(call CP,$(TOP)/memstack/$f,"$(DESTDIR)$(PREFIX)/include/memstack")$(newline))
 	$(call CP,$(LIB_DIR)/$(LIB)$(LIB_SUFFIX),"$(DESTDIR)$(LIBDIR)")
 	$(call CP,$(IMP_DIR)/$(DLL)$(IMP_SUFFIX),"$(DESTDIR)$(LIBDIR)")

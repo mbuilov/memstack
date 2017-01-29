@@ -240,7 +240,7 @@ Note: allocations are written to ```stderr```
     ```
 
     _**Tip**_:
-    to view other possible values of OS, CPU or TARGET variables, undefine them.
+    to view other possible values of OS, CPU or TARGET variables, do not define them.
 
     If make target is not specified, default target _all_ (compile the library) will be built.
 
@@ -263,7 +263,7 @@ Note: allocations are written to ```stderr```
     C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 TARGET=MEMSTACK OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0" PREFIX=C:\dst install
     ```
 
-    Headers are installed to $(PREFIX)/include, libraries - to $(PREFIX)/lib.
+    Headers are installed in $(PREFIX)/include, libraries - in $(PREFIX)/lib.
 
     _**Tips**_.
     - define variable PREFIX to override default install location - /usr/local

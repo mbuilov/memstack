@@ -47,8 +47,9 @@ License: LGPL version 2.1 or any later version
 endef
 
 install_libmemstack: LIB_NAME := $(firstword $(DLL) $(LIB))
-install_libmemstack: PC_TEXT := $(call PKGCONFIG_DEF_TEMPLATE,$(LIB_NAME),$(SOVER),$(PC_DESC),$(PC_COMMENT),$(VENDOR_URL))
 install_libmemstack: LA_TEXT := $(call LIBTOOL_LA_TEMPLATE,$(DLL),$(SOVER),$(LIB))
+install_libmemstack: PC_TEXT := $(call \
+  PKGCONFIG_DEF_TEMPLATE,$(LIB_NAME),$(SOVER),$(PC_DESC),$(PC_COMMENT),$(VENDOR_URL),,,,$(addprefix -D,$(DEFINES)))
 
 install_libmemstack_headers:
 	$(INSTALL) -d '$(DESTDIR)$(PREFIX)/include/memstack'
@@ -81,11 +82,14 @@ else ifeq (WINXX,$(OS))
 DST_INC_DIR := $(subst $(space),\$(space),$(DESTDIR)$(PREFIX)/include/memstack)
 DST_LIB_DIR := $(subst $(space),\$(space),$(DESTDIR)$(LIBDIR))
 
+ifneq ($(DLL)$(LIB),)
 $(DST_INC_DIR): | $(DST_LIB_DIR)
-$(DST_INC_DIR) $(DST_LIB_DIR): install_check_prefix
+endif
+
+$(DST_INC_DIR) $(DST_LIB_DIR):
 	$(call MKDIR,"$(subst \ , ,$@)")
 
-install_libmemstack_headers: install_check_prefix | $(DST_INC_DIR)
+install_libmemstack_headers: | $(DST_INC_DIR)
 	$(foreach f,$(HEADERS),$(call CP,$(TOP)/memstack/$f,"$(DESTDIR)$(PREFIX)/include/memstack")$(newline))
 
 install_libmemstack: install_libmemstack_headers | $(DST_LIB_DIR)

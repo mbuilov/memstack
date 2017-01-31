@@ -5,7 +5,8 @@ LIB     := $(if $(NO_STATIC),,memstack)
 DLL     := $(if $(NO_SHARED),,memstack)
 SRC     := memstack.c
 INCLUDE := ..
-SOVER   := 1
+SOVER   := $(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR).$(PRODUCT_PATCH_NUM)
+
 DLL_DEFINES := MEMSTACK_EXPORTS=$(DLL_EXPORTS_DEFINE)
 
 ifdef DEBUG

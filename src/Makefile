@@ -28,12 +28,16 @@ install_libmemstack: install_libmemstack_check_libs $(call FORM_TRG,LIB) $(call 
 install_libmemstack uninstall_libmemstack: LIB   := $(LIB)
 install_libmemstack uninstall_libmemstack: DLL   := $(DLL)
 install_libmemstack uninstall_libmemstack: SOVER := $(SOVER)
+install_libmemstack uninstall_libmemstack: LIB_NAME := $(firstword $(DLL) $(LIB))
 
 install_libmemstack_headers: HEADERS := \
   memstack_base.h \
   memstack_comn.h \
-  memstack_debug.h \
   memstack.h
+
+ifdef DEBUG
+install_libmemstack_headers: HEADERS += memstack_debug.h
+endif
 
 ifeq (LINUX,$(OS))
 
@@ -47,7 +51,6 @@ Author:  $(VENDOR_NAME)
 License: LGPL version 2.1 or any later version
 endef
 
-install_libmemstack: LIB_NAME := $(firstword $(DLL) $(LIB))
 install_libmemstack: LA_TEXT := $(call LIBTOOL_LA_TEMPLATE,$(DLL),$(SOVER),$(LIB))
 install_libmemstack: PC_TEXT := $(call \
   PKGCONFIG_DEF_TEMPLATE,$(LIB_NAME),$(SOVER),$(PC_DESC),$(PC_COMMENT),$(VENDOR_URL),,,,$(addprefix -D,$(DEFINES)))

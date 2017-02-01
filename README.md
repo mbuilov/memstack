@@ -7,7 +7,13 @@ To simplify this task, it may be useful to allocate memory via special object an
 struct memstack - an example of such special object.
 
 
-## Api overview
+## Contents
+
+- [Api overview](#api-overview)
+- [Debug api](#debug-api)
+- [Installing](#installing)
+
+### Api overview
 
 1. [memstack_init](#init-memstack-structure)
 2. [memstack_destroy](#destroy-memstack-structure)
@@ -20,7 +26,7 @@ struct memstack - an example of such special object.
 9. [memstack_get_last_mem](#get-pointer-to-last-pushed-memory)
 
 
-## Debug api
+### Debug api
 
 1. [memstack_check](#check-red-zones-of-memstack-allocations)
 2. [memstack_print](#print-current-memstack-allocations)
@@ -215,14 +221,14 @@ Parameters:
 Note: allocations are written to ```stderr```
 
 
-## Building
+### Installing
 
 1. Get clean-build build system:
 
     ```
     git clone https://github.com/mbuilov/clean-build
     ```
-2. For windows, get Gnu Make:
+2. For windows, get Gnu Make excutable:
 
     ```
     git clone https://github.com/mbuilov/gnumake-windows
@@ -242,15 +248,24 @@ Note: allocations are written to ```stderr```
     _**Tip**_:
     to view other possible values of OS, CPU or TARGET variables, do not define them.
 
+    _**Tip**_:
+    define variable V=1 for verbose build, to view execued commands.
+
+    _**Tips**_:
+    - define NO_STATIC=1 to not build static library archive,
+    - define NO_SHARED=1 to not build shared library (dll).
+
     If make target is not specified, default target _all_ (compile the library) will be built.
 
     _**Tip**_: there are predefined targets:
-    * test      - to build library and tests
-    * check     - to build library and tests, then run tests
-    * clean     - to delete built artifacts, except created directories
-    * distclean - to delete all artifacts, including created directories
+    * _test_      - to build library and tests
+    * _check_     - to build library and tests, then run tests
+    * _clean_     - to delete built artifacts, except created directories
+    * _distclean_ - to delete all artifacts, including created directories
 
-4. Install library with interface headers
+4. Install library and interface headers
+
+    _Note_: make command should be the same as for building, except the target should be install/uninstall.
 
     4.1 On Linux:
     possibly as root, do
@@ -263,12 +278,12 @@ Note: allocations are written to ```stderr```
     C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 TARGET=MEMSTACK OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0" PREFIX=C:\dst install
     ```
 
-    Headers are installed in $(PREFIX)/include, libraries - in $(PREFIX)/lib.
+    _Note_: Headers are installed in $(PREFIX)/include, libraries - in $(PREFIX)/lib.
 
-    _**Tips**_.
-    - define variable PREFIX to override default install location - /usr/local
+    _**Tips**_:
+    - define variable PREFIX to override default install location - /usr/local (for UNIX) or dist (for WINDOWS)
     - define variable LIBDIR to override default libraries install location - $(PREFIX)/lib
     - define variable DESTDIR to add prefix to $(PREFIX) - to make path to temporary install location.
 
     _**Tip**_: there is one more predefined target:
-    * uninstall - to delete installed files. Note: installed directories are not deleted.
+    * _uninstall_ - to delete installed files. Note: installed directories are not deleted.

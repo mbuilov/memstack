@@ -16,8 +16,8 @@ endif
 
 ifdef DEBUG
 DEFINES := MEMSTACK_DEBUG
-LIBS    := $(addsuffix d,$(LIBS))
-DLLS    := $(addsuffix d,$(DLLS))
+LIBS    := $(LIBS:=d)
+DLLS    := $(DLLS:=d)
 endif
 
 $(DO_TEST_EXE)

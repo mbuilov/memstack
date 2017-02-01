@@ -10,8 +10,8 @@ SOVER   := $(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR).$(PRODUCT_PATCH_NUM
 DLL_DEFINES := MEMSTACK_EXPORTS=$(DLL_EXPORTS_DEFINE)
 
 ifdef DEBUG
-LIB     := $(addsuffix d,$(LIB))
-DLL     := $(addsuffix d,$(DLL))
+LIB     := $(LIB:=d)
+DLL     := $(DLL:=d)
 SRC     += memstack_debug.c
 DEFINES := MEMSTACK_DEBUG
 endif

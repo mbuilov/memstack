@@ -98,12 +98,12 @@ install_libmemstack_headers: | $(DST_INC_DIR)
 
 install_libmemstack: install_libmemstack_headers | $(DST_LIB_DIR)
 	$(if $(LIB),$(call CP,$(LIB_DIR)/$(LIB)$(LIB_SUFFIX),"$(DESTDIR)$(LIBDIR)"))
-	$(if $(DLL).$(call CP,$(IMP_DIR)/$(DLL)$(IMP_SUFFIX),"$(DESTDIR)$(LIBDIR)"))
+	$(if $(DLL),$(call CP,$(IMP_DIR)/$(DLL)$(IMP_SUFFIX),"$(DESTDIR)$(LIBDIR)"))
 	$(if $(DLL),$(call CP,$(DLL_DIR)/$(DLL)$(DLL_SUFFIX),"$(DESTDIR)$(LIBDIR)"))
 
 uninstall_libmemstack:
 	$(call DEL_DIR,"$(DESTDIR)$(PREFIX)/include/memstack")
-	$(if $(LIB).$(call DEL,"$(DESTDIR)$(LIBDIR)/$(LIB)$(LIB_SUFFIX)"))
+	$(if $(LIB),$(call DEL,"$(DESTDIR)$(LIBDIR)/$(LIB)$(LIB_SUFFIX)"))
 	$(if $(DLL),$(call DEL,"$(DESTDIR)$(LIBDIR)/$(DLL)$(IMP_SUFFIX)"))
 	$(if $(DLL),$(call DEL,"$(DESTDIR)$(LIBDIR)/$(DLL)$(DLL_SUFFIX)"))
 

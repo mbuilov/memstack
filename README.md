@@ -246,10 +246,10 @@ Note: allocations are written to ```stderr```
     ```
 
     _**Tips**_:
-    - define NO_STATIC=1 to not build static library archive,
-    - define NO_SHARED=1 to not build shared library (dll),
-    - to view other possible values of OS, CPU or TARGET variables, do not define them,
-    - define variable V=1 for verbose build, to print executed commands.
+    - define ```NO_STATIC=1``` to not build static library archive,
+    - define ```NO_SHARED=1``` to not build shared library (dll),
+    - to view other possible values of ```OS```, ```CPU``` or ```TARGET``` variables, do not define them,
+    - define variable ```V=1``` for verbose build, to print executed commands.
 
     If make target is not specified, default target _all_ (compile the library) will be built.
 
@@ -277,9 +277,9 @@ Note: allocations are written to ```stderr```
     _Note_: Headers are installed in $(PREFIX)/include, libraries - in $(PREFIX)/lib.
 
     _**Tips**_:
-    - define variable PREFIX to override default install location - /usr/local (for UNIX) or dist (for WINDOWS)
-    - define variable LIBDIR to override default libraries install location - $(PREFIX)/lib
-    - define variable DESTDIR to add prefix to $(PREFIX) - to make path to temporary install location.
+    - define variable ```PREFIX``` to override default install location - ```/usr/local``` (for UNIX) or ```dist``` (for WINDOWS)
+    - define variable ```LIBDIR``` to override default libraries install location - ```$(PREFIX)/lib```
+    - define variable ```DESTDIR``` to add prefix to ```$(PREFIX)``` - to make path to temporary install location.
 
     _**Tip**_: there is one more predefined target:
     * _uninstall_ - to delete installed files. Note: some installed directories may not be deleted.

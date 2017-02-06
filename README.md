@@ -262,6 +262,7 @@ Note: allocations are written to ```stderr```
     _Note_: make command should be the same as for building, except the target should be _```install```_ or _```uninstall```_.
 
     4.1 On Linux (_example_):
+
     possibly as root, do
     ```
     $ make MTOP=/home/user/clean-build OS=LINUX CPU=x86_64 TARGET=MEMSTACK install

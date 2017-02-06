@@ -225,14 +225,12 @@ Note: allocations are written to ```stderr```
 
 1. Get clean-build build system:
 
-    ```
-    git clone https://github.com/mbuilov/clean-build
-    ```
-2. For windows, get Gnu Make excutable:
+    [```git clone https://github.com/mbuilov/clean-build```](https://github.com/mbuilov/clean-build)
 
-    ```
-    git clone https://github.com/mbuilov/gnumake-windows
-    ```
+2. For windows, get [Gnu Make](https://www.gnu.org/software/make) executable:
+
+    [```git clone https://github.com/mbuilov/gnumake-windows```](https://github.com/mbuilov/gnumake-windows)
+
 3. Build library
 
     3.1 On Linux:
@@ -246,40 +244,40 @@ Note: allocations are written to ```stderr```
     ```
 
     _**Tips**_:
-    - define ```NO_STATIC=1``` to not build static library archive,
-    - define ```NO_SHARED=1``` to not build shared library (dll),
-    - to view other possible values of ```OS```, ```CPU``` or ```TARGET``` variables, do not define them,
-    - define variable ```V=1``` for verbose build, to print executed commands.
+    - define ```NO_STATIC=1``` to not build static library archive
+    - define ```NO_SHARED=1``` to not build shared library (dll)
+    - to view other possible values of ```OS```, ```CPU``` or ```TARGET``` variables, do not define them
+    - define variable ```V=1``` for verbose build, to print executed commands
 
-    If make target is not specified, default target _all_ (compile the library) will be built.
+    If make target is not specified, default target _```all```_ (compile the library) will be built.
 
     _**Tip**_: there are predefined targets:
-    * _test_      - to build library and tests
-    * _check_     - to build library and tests, then run tests
-    * _clean_     - to delete built artifacts, except created directories
-    * _distclean_ - to delete all artifacts, including created directories
+    * _```test```_      - to build library and tests
+    * _```check```_     - to build library and tests, then run tests
+    * _```clean```_     - to delete built artifacts, except created directories
+    * _```distclean```_ - to delete all artifacts, including created directories
 
 4. Install library and interface headers
 
-    _Note_: make command should be the same as for building, except the target should be _install_ or _uninstall_.
+    _Note_: make command should be the same as for building, except the target should be _```install```_ or _```uninstall```_.
 
-    4.1 On Linux:
+    4.1 On Linux (_example_):
     possibly as root, do
     ```
     $ make MTOP=/home/user/clean-build OS=LINUX CPU=x86_64 TARGET=MEMSTACK install
     ```
 
-    4.2 On Windows:
+    4.2 On Windows (_example_):
     ```
     C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 TARGET=MEMSTACK OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0" PREFIX=C:\dst install
     ```
 
-    _Note_: Headers are installed in $(PREFIX)/include, libraries - in $(PREFIX)/lib.
+    _Note_: Headers are installed in ```$(PREFIX)/include```, libraries - in ```$(PREFIX)/lib```.
 
     _**Tips**_:
     - define variable ```PREFIX``` to override default install location - ```/usr/local``` (for UNIX) or ```dist``` (for WINDOWS)
     - define variable ```LIBDIR``` to override default libraries install location - ```$(PREFIX)/lib```
-    - define variable ```DESTDIR``` to add prefix to ```$(PREFIX)``` - to make path to temporary install location.
+    - define variable ```DESTDIR``` to add prefix to ```$(PREFIX)``` - to make path to temporary install location
 
     _**Tip**_: there is one more predefined target:
-    * _uninstall_ - to delete installed files. Note: some installed directories may not be deleted.
+    * _```uninstall```_ - to delete installed files. Note: some installed directories may not be deleted.

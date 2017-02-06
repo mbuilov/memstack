@@ -33,7 +33,7 @@ struct memstack - an example of such special object.
 3. [memstack_enable_log](#enable-logging-of-memstack-allocations)
 
 
-#### Init memstack structure
+#### Initialize memstack structure
 ```
 void memstack_init(struct memstack *st);
 ```
@@ -245,15 +245,11 @@ Note: allocations are written to ```stderr```
     C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 TARGET=MEMSTACK OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0"
     ```
 
-    _**Tip**_:
-    to view other possible values of OS, CPU or TARGET variables, do not define them.
-
-    _**Tip**_:
-    define variable V=1 for verbose build, to view execued commands.
-
     _**Tips**_:
     - define NO_STATIC=1 to not build static library archive,
-    - define NO_SHARED=1 to not build shared library (dll).
+    - define NO_SHARED=1 to not build shared library (dll),
+    - to view other possible values of OS, CPU or TARGET variables, do not define them,
+    - define variable V=1 for verbose build, to print executed commands.
 
     If make target is not specified, default target _all_ (compile the library) will be built.
 
@@ -265,7 +261,7 @@ Note: allocations are written to ```stderr```
 
 4. Install library and interface headers
 
-    _Note_: make command should be the same as for building, except the target should be install/uninstall.
+    _Note_: make command should be the same as for building, except the target should be _install_ or _uninstall_.
 
     4.1 On Linux:
     possibly as root, do
@@ -286,4 +282,4 @@ Note: allocations are written to ```stderr```
     - define variable DESTDIR to add prefix to $(PREFIX) - to make path to temporary install location.
 
     _**Tip**_: there is one more predefined target:
-    * _uninstall_ - to delete installed files. Note: installed directories are not deleted.
+    * _uninstall_ - to delete installed files. Note: some installed directories may not be deleted.

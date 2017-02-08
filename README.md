@@ -30,6 +30,8 @@ To simplify this task, it may be useful to allocate memory via special object an
 2. [memstack_print](#print-current-memstack-allocations)
 3. [memstack_enable_log](#enable-logging-of-memstack-allocations)
 
+---------------------------------------------------
+
 #### Initialize memstack structure
 ```C
 void memstack_init(struct memstack *st);

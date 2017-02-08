@@ -56,7 +56,7 @@ void memstack_destroy(struct memstack *st);
 Parameters:
 - `st`  - memstack structure to destroy
 
-All memory allocated by memstack is deallocated.
+All memory allocated by memstack is deallocated
 
 #### Get memory from memstack
 ```C
@@ -66,11 +66,11 @@ Parameters:
 - `st`   - memstack structure
 - `size` - number of bytes to allocate, must be non-zero
 
-**Returns:** pointer to abstract structure `memstack_memory_t` or `NULL` if allocation failed.
+**Returns:** pointer to abstract structure `memstack_memory_t` or `NULL` if allocation failed
 
-Returned pointer will be suitably aligned for any structure, so may be casted to any poiner type.
+Returned pointer will be suitably aligned for any structure, so may be casted to any poiner type
 
-_Note_: `memstack_push()` may not call system `malloc()` if there is enough free space in last allocated internal memstack memory block.
+_Note_: `memstack_push()` may not call system `malloc()` if there is enough free space in last allocated internal memstack memory block
 
 *Example:*
 ```C
@@ -88,9 +88,9 @@ Parameters:
 - `st`  - memstack structure
 - `mem` - pointer to abstract structure `memstack_memory_t` - the same pointer that was returned by one of previous `memstack_push()` calls
 
-It is possible to pop multiple sequential allocations by one call - just pop the first allocation of the sequence.
+It is possible to pop multiple sequential allocations by one call - just pop the first allocation of the sequence
 
-_Note_: `memstack_pop()` may not call system `free()` for the last popped internal memstack memory block.
+_Note_: `memstack_pop()` may not call system `free()` for the last popped internal memstack memory block
 
 *Example:*
 ```C
@@ -106,13 +106,13 @@ memstack_memory_t *memstack_repush_last(struct memstack *st, memstack_memory_t *
 Parameters:
 - `st`  - memstack structure
 - `mem` - pointer to abstract structure `memstack_memory_t` that was returned by last `memstack_push()` call or `NULL`
-- `new_size` - new allocation size, in bytes, must be non-zero.
+- `new_size` - new allocation size, in bytes, must be non-zero
 
-If `mem` is `NULL`, then acts like `memstack_push()`.
+If `mem` is `NULL`, then acts like `memstack_push()`
 
-**Returns:** pointer to abstract structure `memstack_memory_t` or `NULL` if failed to expand existing allocation or create new allocation.
+**Returns:** pointer to abstract structure `memstack_memory_t` or `NULL` if failed to expand existing allocation or create new allocation
 
-Returned pointer will be suitably aligned for any structure, so may be casted to any poiner type.
+Returned pointer will be suitably aligned for any structure, so may be casted to any poiner type
 
 *Example:*
 ```C
@@ -130,7 +130,7 @@ void memstack_cleanup(struct memstack *st);
 Parameters:
 - `st`  - memstack structure
 
-_Note_: memstack remembers maximum total size of allocations and will try to allocate one big memory block on first `memstack_push()` call.
+_Note_: memstack remembers maximum total size of allocations and will try to allocate one big memory block on first `memstack_push()` call
 
 #### Get memstack bottom position
 ```C
@@ -139,13 +139,13 @@ memstack_bottom_t *memstack_get_bottom(struct memstack *st);
 Parameters:
 - `st`  - memstack structure
 
-**Returns:** pointer to abstract structure `memstack_bottom_t` for passing it to `memstack_reset()`.
+**Returns:** pointer to abstract structure `memstack_bottom_t` for passing it to `memstack_reset()`
 
-Returned pointer must not be checked, it may have any value, even `NULL`.
+Returned pointer must not be checked, it may have any value, even `NULL`
 
-This function is used to remember memstack state before doing next allocations and then to reset memstack to saved state after these allocations.
+This function is used to remember memstack state before doing next allocations and then to reset memstack to saved state after these allocations
 
-_Note_: saved state is associated with last memstack allocation that may be made before `memstack_get_bottom()` call and is invalidated by `memstack_pop()/memstack_repush_last()` called for that allocation.
+_Note_: saved state is associated with last memstack allocation that may be made before `memstack_get_bottom()` call and is invalidated by `memstack_pop()/memstack_repush_last()` called for that allocation
 
 #### Reset memstack to saved state
 ```C
@@ -155,9 +155,9 @@ Parameters:
 - `st`  - memstack structure
 - `pos` - memstack state previously obtained via `memstack_get_bottom()` or `NULL`
 
-All memory allocated in memstack after `pos` was taken is popped.
+All memory allocated in memstack after `pos` was taken is popped
 
-If `pos` is `NULL`, then acts like `memstack_cleanup()`.
+If `pos` is `NULL`, then acts like `memstack_cleanup()`
 
 *Example:*
 ```C
@@ -177,9 +177,9 @@ Parameters:
 - `st`   - memstack structure
 - `size` - last allocation size, in bytes, must be non-zero
 
-**Returns:** pointer to abstract structure `memstack_memory_t` that was returned by last `memstack_push()/memstack_repush_last()` call.
+**Returns:** pointer to abstract structure `memstack_memory_t` that was returned by last `memstack_push()/memstack_repush_last()` call
 
-_Note_: `size` must be exactly the same one that was passed to last `memstack_push()/memstack_repush_last()` call.
+_Note_: `size` must be exactly the same one that was passed to last `memstack_push()/memstack_repush_last()` call
 
 *Example:*
 ```C
@@ -250,7 +250,7 @@ _Note_: allocations are written to `stderr`
     - to view other possible values of `OS`, `CPU` or `TARGET` variables, do not define them
     - define variable `V=1` for verbose build, to print executed commands
 
-    If make target is not specified, default target _`all`_ (compile the library) will be built.
+    If make target is not specified, default target _`all`_ (compile the library) will be built
 
     _**Tip**_: there are predefined targets:
     * _`test`_      - to build library and tests
@@ -260,7 +260,7 @@ _Note_: allocations are written to `stderr`
 
 4. Install library and interface headers
 
-    _Note_: make command should be the same as for building, except the target should be _`install`_ or _`uninstall`_.
+    _Note_: make command should be the same as for building, except the target should be _`install`_ or _`uninstall`_
 
     4.1 On Linux (_example_):
 
@@ -274,7 +274,7 @@ _Note_: allocations are written to `stderr`
     C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 TARGET=MEMSTACK OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0" PREFIX=C:\dst install
     ```
 
-    _Note_: Headers are installed in `$(PREFIX)/include`, libraries - in `$(LIBDIR)`.
+    _Note_: Headers are installed in `$(PREFIX)/include`, libraries - in `$(LIBDIR)`
 
     _**Tips**_:
     - define variable `PREFIX` to override default install location - `/usr/local` (for UNIX) or `dist` (for WINDOWS)

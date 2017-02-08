@@ -4,7 +4,7 @@ memory stack allocation library
 In C, it's often hard to track memory allocations and avoid memory leaks.
 To simplify this task, it may be useful to allocate memory via special object and, when appropriate, free all allocations by one call.
 
-struct memstack - an example of such special object.
+`struct memstack` - an example of such special object, available via [memstack/memstack.h](/memstack/memstack.h)
 
 ## Contents
 
@@ -14,7 +14,7 @@ struct memstack - an example of such special object.
 
 ### Api overview
 
-1. [memstack_init](#init-memstack-structure)
+1. [memstack_init](#initialize-memstack-structure)
 2. [memstack_destroy](#destroy-memstack-structure)
 3. [memstack_push](#get-memory-from-memstack)
 4. [memstack_pop](#give-memory-back-to-memstack)
@@ -163,7 +163,7 @@ extern struct memstack *st;
 memstack_bottom_t *pos = memstack_get_bottom(st);
 memstack_memory_t *m1 = memstack_push(st, 100);
 memstack_memory_t *m2 = memstack_push(st, 200);
-....
+...
 memstack_reset(st, pos);
 ```
 
@@ -183,7 +183,7 @@ _Note_: `size` must be exactly the same one that was passed to last `memstack_pu
 ```C
 extern struct memstack *st;
 memstack_memory_t *m1 = memstack_push(st, 100);
-....
+...
 memstack_memory_t *m2 = memstack_get_last_mem(st, 100);
 assert(m1 == m2);
 ```
@@ -232,13 +232,13 @@ _Note_: allocations are written to `stderr`
 
 3. Build library
 
-    3.1 On Linux:
-    ```
+    3.1 On Linux (_example_):
+    ```sh
     $ make MTOP=/home/user/clean-build OS=LINUX CPU=x86_64 TARGET=MEMSTACK
     ```
 
-    3.2 On Windows:
-    ```
+    3.2 On Windows (_example_):
+    ```cmd
     C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 TARGET=MEMSTACK OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0"
     ```
 
@@ -263,16 +263,16 @@ _Note_: allocations are written to `stderr`
     4.1 On Linux (_example_):
 
     possibly as root, do
-    ```
+    ```sh
     $ make MTOP=/home/user/clean-build OS=LINUX CPU=x86_64 TARGET=MEMSTACK install
     ```
 
     4.2 On Windows (_example_):
-    ```
+    ```cmd
     C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 TARGET=MEMSTACK OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0" PREFIX=C:\dst install
     ```
 
-    _Note_: Headers are installed in `$(PREFIX)/include`, libraries - in `$(PREFIX)/lib`.
+    _Note_: Headers are installed in `$(PREFIX)/include`, libraries - in `$(LIBDIR)`.
 
     _**Tips**_:
     - define variable `PREFIX` to override default install location - `/usr/local` (for UNIX) or `dist` (for WINDOWS)

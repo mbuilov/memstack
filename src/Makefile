@@ -5,7 +5,6 @@ LIB     := $(if $(NO_STATIC),,memstack)
 DLL     := $(if $(NO_SHARED),,memstack)
 SRC     := memstack.c
 INCLUDE := ..
-
 DLL_DEFINES := MEMSTACK_EXPORTS=$(DLL_EXPORTS_DEFINE)
 
 ifdef DEBUG

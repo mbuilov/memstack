@@ -43,8 +43,6 @@ ifeq (LINUX,$(OS))
 include $(MTOP)/LINUX/pc.mk
 include $(MTOP)/LINUX/la.mk
 
-PC_DESC := Memory Stack allocation library
-
 define PC_COMMENT
 Author:  $(VENDOR_NAME)
 License: LGPL version 2.1 or any later version
@@ -52,7 +50,7 @@ endef
 
 install_libmemstack: LA_TEXT := $(call LIBTOOL_LA_TEMPLATE,$(DLL),$(MODVER),$(LIB))
 install_libmemstack: PC_TEXT := $(call \
-  PKGCONFIG_DEF_TEMPLATE,$(LIB_NAME),$(MODVER),$(PC_DESC),$(PC_COMMENT),$(VENDOR_URL),,,,$(addprefix -D,$(DEFINES)))
+  PKGCONFIG_DEF_TEMPLATE,$(LIB_NAME),$(MODVER),$(PRODUCT_NAME),$(PC_COMMENT),$(VENDOR_URL),,,,$(addprefix -D,$(DEFINES)))
 
 install_libmemstack_headers:
 	$(INSTALL) -d '$(DESTDIR)$(PREFIX)/include/memstack'

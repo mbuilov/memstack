@@ -5,7 +5,6 @@ include $(MTOP)/ctest.mk
 EXE     := memstack_test_c
 SRC     := memstack_test.c
 INCLUDE := ..
-RPATH   := $(LIB_DIR)
 
 ifndef NO_STATIC
 LIBS    := memstack
@@ -21,24 +20,13 @@ LIBS    := $(LIBS:=d)
 DLLS    := $(DLLS:=d)
 endif
 
-ifeq (UNIX,$(OSTYPE))
-ifdef DLLS
-DLINK := $(LIB_DIR)/lib$(DLLS).so.$(PRODUCT_VERSION_MAJOR)
-$(call ADD_GENERATED,$(DLINK))
-$(DLINK): $(LIB_DIR)/lib$(DLLS).so
-	$(call SUP,LN,$@)ln -sf$(if $(VERBOSE),v) $(notdir $<) $@
-endif
-endif
+SHLIBS := $(DLLS:=.$(call ver_major,$(PRODUCT_VER)))
 
-$(BIN_DIR)/$(EXE): | $(DLINK)
-
-$(DO_TEST_EXE)
-$(call MAKE_CONTINUE,INCLUDE DEFINES LIBS DLLS RPATH)
+$(call DO_TEST_EXE,$(SHLIBS))
+$(call MAKE_CONTINUE,INCLUDE DEFINES LIBS DLLS SHLIBS)
 
 EXE     := memstack_test_cpp
 SRC     := memstack_test.cpp
 
-$(BIN_DIR)/$(EXE): | $(DLINK)
-
-$(DO_TEST_EXE)
+$(call DO_TEST_EXE,$(SHLIBS))
 $(DEFINE_TARGETS)

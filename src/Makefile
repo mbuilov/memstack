@@ -82,10 +82,7 @@ else ifeq (WINXX,$(OS))
 DST_INC_DIR := $(subst $(space),\$(space),$(DESTDIR)$(PREFIX)/include/memstack)
 DST_LIB_DIR := $(subst $(space),\$(space),$(DESTDIR)$(LIBDIR))
 
-ifneq ($(DLL)$(LIB),)
-$(DST_INC_DIR): | $(DST_LIB_DIR)
-endif
-
+$(DST_LIB_DIR): | $(DST_INC_DIR)
 $(DST_INC_DIR) $(DST_LIB_DIR):
 	$(call MKDIR,"$(subst \ , ,$@)")
 

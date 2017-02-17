@@ -5,6 +5,7 @@ include $(MTOP)/ctest.mk
 EXE     := memstack_test_c
 SRC     := memstack_test.c
 INCLUDE := ..
+RPATH   := $(LIB_DIR)
 
 ifndef NO_STATIC
 LIBS    := memstack
@@ -22,11 +23,15 @@ endif
 
 SHLIBS := $(DLLS:=.$(call ver_major,$(PRODUCT_VER)))
 
+$(call TEST_NEED_SIMLINKS,$(SHLIBS))
+
 $(call DO_TEST_EXE,$(SHLIBS))
-$(call MAKE_CONTINUE,INCLUDE DEFINES LIBS DLLS SHLIBS)
+
+$(call MAKE_CONTINUE,INCLUDE DEFINES LIBS DLLS RPATH SHLIBS)
 
 EXE     := memstack_test_cpp
 SRC     := memstack_test.cpp
 
 $(call DO_TEST_EXE,$(SHLIBS))
+
 $(DEFINE_TARGETS)

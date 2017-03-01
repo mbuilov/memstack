@@ -125,3 +125,27 @@ VENDOR_NAME           := Michael M. Builov
 VENDOR_URL            := https://github.com/mbuilov/memstack
 PRODUCT_NAME          := Memory Stack allocation library
 VENDOR_COPYRIGHT      := Copyright (C) 2008-2017 $(VENDOR_NAME), $(VENDOR_URL)
+
+# licence for generated pkgconfig .pc file
+PRODUCT_LICENCE       := LGPL version 2.1 or any later version
+
+# library name
+MEMSTACK_LIB_NAME ?= memstack$(if $(DEBUG),d)
+
+# variants of built static library
+#  LINUX:
+#   R,S   - position-dependent code
+#   P     - position-independent code for executables
+#   D     - position-independent code for shared objects (dlls)
+#  WINDOWS:
+#   R,P,D - dynamically linked multi-threaded libc
+#   S     - statically linked multi-threaded libc
+MEMSTACK_LIB_VARIANTS ?= R P D S
+
+# variants of built dynamic library
+#  LINUX:
+#   R,S   - position-independent code
+#  WINDOWS:
+#   R     - dynamically linked multi-threaded libc
+#   S     - statically linked multi-threaded libc
+MEMSTACK_DLL_VARIANTS ?= R S

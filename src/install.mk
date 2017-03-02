@@ -1,14 +1,19 @@
 # this file included by $(TOP)/src/Makefile
 
-# define
-# NO_INSTALL_HEADERS - to not install/uninstall header files
-# NO_INSTALL_LA      - to not install/uninstall libtool .la-files (UNIX)
-# NO_INSTALL_PC      - to not install/uninstall pkg-config .pc-files (UNIX)
-# NO_INSTALL_IMPS    - to not install/uninstall dll implementation libraries (WINDOWS)
+ifdef NO_DEV
+# do not install/uninstall header files
+NO_INSTALL_HEADERS := 1
+# do not install/uninstall libtool .la-files (UNIX)
+NO_INSTALL_LA      := 1
+# do not install/uninstall pkg-config .pc-files (UNIX)
+NO_INSTALL_PC      := 1
+# do not install/uninstall dll import libraries (WINDOWS)
+NO_INSTALL_IMPS    := 1
+endif
 
 # also, if defined
-# NO_STATIC          - static libraries are not installed/uninstalled
-# NO_SHARED          - dynamic libraries are not installed/uninstalled
+# NO_STATIC - static libraries are not installed/uninstalled
+# NO_SHARED - dynamic libraries are not installed/uninstalled
 
 BUILT_LIB_VARIANTS := $(if $(LIB),$(call GET_VARIANTS,LIB))
 BUILT_DLL_VARIANTS := $(if $(DLL),$(call GET_VARIANTS,DLL))
@@ -65,7 +70,7 @@ install_libmemstack: $(if $(NO_INSTALL_HEADERS),,install_libmemstack_headers)
 	$(foreach l,$(BUILT_LIBS),$(newline)$(INSTALL) -m 644 $l '$(DESTDIR)$(LIBDIR)')
 	$(foreach d,$(BUILT_DLLS),$(newline)$(INSTALL) -m 755 $d '$(DESTDIR)$(LIBDIR)/$(notdir $d).$(MODVER)')
 	$(foreach d,$(BUILT_DLLS),$(newline)ln -sf$(if $(VERBOSE),v) $(notdir $d).$(MODVER) '$(DESTDIR)$(LIBDIR)/$(notdir $d)')
-	$(if $(NO_INSTALL_LA),,$(call INSTALL_LAS,$(ALL_LIBS),$(BUILT_LIBS),$(BUILT_DLLS)))
+	$(if $(NO_INSTALL_LA),,$(call INSTALL_LIBTOOL_ARCHIVES,$(ALL_LIBS),$(BUILT_LIBS),$(BUILT_DLLS)))
 	$(if $(NO_INSTALL_PC),,$(if $(BUILT_LIBS)$(BUILT_DLLS),$(INSTALL) -d '$(DESTDIR)$(PKG_CONFIG_DIR)'))
 	$(if $(NO_INSTALL_PC),,$(call INSTALL_PKGCONFS,$(ALL_LIBS),PC_GENERATOR))
 	$(if $(BUILT_DLLS),$(LDCONFIG) -n$(if $(VERBOSE),v) '$(DESTDIR)$(LIBDIR)')
@@ -75,7 +80,7 @@ uninstall_libmemstack:
   $(NO_INSTALL_HEADERS),,'$(DESTDIR)$(PREFIX)/include/memstack') $(foreach \
   l,$(BUILT_LIBS),'$(DESTDIR)$(LIBDIR)/$(notdir $l)') $(foreach \
   d,$(BUILT_DLLS),'$(DESTDIR)$(LIBDIR)/$(notdir $d)' '$(DESTDIR)$(LIBDIR)/$(notdir $d).$(MODVER)') $(if \
-  $(NO_INSTALL_LA),,$(call INSTALLED_LAS,$(ALL_LIBS),$(BUILT_LIBS),$(BUILT_DLLS))) $(if \
+  $(NO_INSTALL_LA),,$(call INSTALLED_LIBTOOL_ARCHIVES,$(ALL_LIBS),$(BUILT_LIBS),$(BUILT_DLLS))) $(if \
   $(NO_INSTALL_PC),,$(call INSTALLED_PKGCONFS,$(ALL_LIBS)))
 	$(if $(BUILT_DLLS),$(LDCONFIG) -n$(if $(VERBOSE),v) '$(DESTDIR)$(LIBDIR)')
 

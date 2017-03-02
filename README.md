@@ -256,6 +256,10 @@ _Note_: allocations are written to `stderr`
     * for static library  - `MEMSTACK_LIB_VARIANTS="R P D S"`
     * for dynamic library - `MEMSTACK_DLL_VARIANTS="R S"`
 
+    _**Notes**_:
+    - if some variant is unsupported under target platform, variant is filtered-out from list of variants
+    - if variants list is empty, default variant `R` is built
+
     Variants of static library for **LINUX**:
     * _`R`_ - default, position-dependent code for linking executables
     * _`P`_ - position-independent code for linking executables (`-fpie` compiler option)

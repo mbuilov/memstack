@@ -256,19 +256,19 @@ _Note_: allocations are written to `stderr`
     * for static library  - `MEMSTACK_LIB_VARIANTS="R P D S"`
     * for dynamic library - `MEMSTACK_DLL_VARIANTS="R S"`
 
-    Variants of static library for _LINUX_:
+    Variants of static library for **LINUX**:
     * _`R`_ - default, position-dependent code for linking executables
     * _`P`_ - position-independent code for linking executables (`-fpie` compiler option)
     * _`D`_ - position-independent code for linking shared objects (`-fpic` compiler option)
 
-    Variants of static library for _WINDOWS_:
+    Variants of static library for **WINDOWS**:
     * _`R`_ - default, dynamically linked multi-threaded C runtime library (`/MD` compiler option)
     * _`S`_ - statically linked multi-threaded C runtime library (`/MT` compiler option)
 
-    Variants of dynamic library for _LINUX_:
+    Variants of dynamic library for **LINUX**:
     * _`R`_ - default, position-independent code (`-fpic` compiler option)
 
-    Variants of dynamic library for _WINDOWS_:
+    Variants of dynamic library for **WINDOWS**:
     * _`R`_ - default, dynamically linked multi-threaded C runtime library (`/MD` compiler option)
     * _`S`_ - statically linked multi-threaded C runtime library (`/MT` compiler option)
 

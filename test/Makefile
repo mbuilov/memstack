@@ -55,6 +55,7 @@ $(foreach x,$(wordlist 2,999999,$(TEST_LIB_VARIANTS) $(TEST_DLL_VARIANTS)),$(eva
 
 $(foreach x,$(firstword $(TEST_LIB_VARIANTS) $(TEST_DLL_VARIANTS)),$(eval $(EXPAND_TEST_TEMPLATE)))
 
+# to run tests under cygwin
 check: PATH := $(PATH):$(LIB_DIR)
 
 $(DEFINE_TARGETS)

@@ -252,8 +252,28 @@ _Note_: allocations are written to `stderr`
 
     If make target is not specified, default target _`all`_ (compile the library) will be built
 
+    By default, all variants of library are built:
+    * for static library  - `MEMSTACK_LIB_VARIANTS=R P D S`
+    * for dynamic library - `MEMSTACK_DLL_VARIANTS=R S`
+
+    Variants of static library for LINUX:
+    * _`R`_ - default, position-dependent code for linking executables
+    * _`P`_ - position-independent code for linking executables (-fpie compiler option)
+    * _`D`_ - position-independent code for linking shared objects (-fpic compiler option)
+
+    Variants of static library for WINDOWS:
+    * _`R`_ - default, dynamically linked multi-threaded C runtime library (/MD compiler option)
+    * _`S`_ - statically linked multi-threaded C runtime library (/MT compiler option)
+
+    Variants of dynamic library for LINUX:
+    * _`R`_ - default, position-independent code (-fpic compiler option)
+
+    Variants of dynamic library for WINDOWS:
+    * _`R`_ - default, dynamically linked multi-threaded C runtime library (/MD compiler option)
+    * _`S`_ - statically linked multi-threaded C runtime library (/MT compiler option)
+
     _**Tip**_: there are predefined targets:
-    * _`test`_      - to build library and tests
+    * _`tests`_     - to build library and tests
     * _`check`_     - to build library and tests, then run tests
     * _`clean`_     - to delete built artifacts, except created directories
     * _`distclean`_ - to delete all artifacts, including created directories
@@ -280,6 +300,11 @@ _Note_: allocations are written to `stderr`
     - define variable `PREFIX` to override default install location - `/usr/local` (for UNIX) or `dist` (for WINDOWS)
     - define variable `LIBDIR` to override default libraries install location - `$(PREFIX)/lib`
     - define variable `DESTDIR` to add prefix to `$(PREFIX)` - to make path to temporary install location
+    - define `NO_INSTALL_HEADERS=1` to not install development library interface header files
+    - define `NO_INSTALL_LA=1` to not install development libtool library files (for UNIX)
+    - define `NO_INSTALL_PC=1` to not install development pkg-config  library files (for UNIX)
+    - define `NO_INSTALL_IMPS=1` to not install development dll import libraries (for WINDOWS)
+    - define `NO_DEV=1` to not install all above development files (headers, .la, .pc, import libraries)
 
     _**Tip**_: there is one more predefined target:
     * _`uninstall`_ - to delete installed files. Note: some installed directories may not be deleted.

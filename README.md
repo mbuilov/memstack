@@ -253,24 +253,24 @@ _Note_: allocations are written to `stderr`
     If make target is not specified, default target _`all`_ (compile the library) will be built
 
     By default, all variants of library are built:
-    * for static library  - `MEMSTACK_LIB_VARIANTS=R P D S`
-    * for dynamic library - `MEMSTACK_DLL_VARIANTS=R S`
+    * for static library  - `MEMSTACK_LIB_VARIANTS="R P D S"`
+    * for dynamic library - `MEMSTACK_DLL_VARIANTS="R S"`
 
-    Variants of static library for LINUX:
+    Variants of static library for _LINUX_:
     * _`R`_ - default, position-dependent code for linking executables
-    * _`P`_ - position-independent code for linking executables (-fpie compiler option)
-    * _`D`_ - position-independent code for linking shared objects (-fpic compiler option)
+    * _`P`_ - position-independent code for linking executables (`-fpie` compiler option)
+    * _`D`_ - position-independent code for linking shared objects (`-fpic` compiler option)
 
-    Variants of static library for WINDOWS:
-    * _`R`_ - default, dynamically linked multi-threaded C runtime library (/MD compiler option)
-    * _`S`_ - statically linked multi-threaded C runtime library (/MT compiler option)
+    Variants of static library for _WINDOWS_:
+    * _`R`_ - default, dynamically linked multi-threaded C runtime library (`/MD` compiler option)
+    * _`S`_ - statically linked multi-threaded C runtime library (`/MT` compiler option)
 
-    Variants of dynamic library for LINUX:
-    * _`R`_ - default, position-independent code (-fpic compiler option)
+    Variants of dynamic library for _LINUX_:
+    * _`R`_ - default, position-independent code (`-fpic` compiler option)
 
-    Variants of dynamic library for WINDOWS:
-    * _`R`_ - default, dynamically linked multi-threaded C runtime library (/MD compiler option)
-    * _`S`_ - statically linked multi-threaded C runtime library (/MT compiler option)
+    Variants of dynamic library for _WINDOWS_:
+    * _`R`_ - default, dynamically linked multi-threaded C runtime library (`/MD` compiler option)
+    * _`S`_ - statically linked multi-threaded C runtime library (`/MT` compiler option)
 
     _**Tip**_: there are predefined targets:
     * _`tests`_     - to build library and tests

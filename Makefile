@@ -33,10 +33,10 @@ LIBDIR ?= $(PREFIX)\lib
 
 endif # WINXX
 
-install: install_libmemstack
+install: install_memstack
 	@$(call ECHO,Successfully installed to $(DESTDIR)$(PREFIX))
 
-uninstall: uninstall_libmemstack
+uninstall: uninstall_memstack
 	@$(call ECHO,Uninstalled from $(DESTDIR)$(PREFIX))
 
 include $(MTOP)/parallel.mk

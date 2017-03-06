@@ -24,30 +24,26 @@ FORM_EXE_NAME = $(subst .,_,$(SRC))$(addprefix -,$1)$(addprefix -,$(call tolower
 # $v - static library variant to test
 define TEST_LIB_TEMPLATE
 LIBS    := $(MEMSTACK_LIB_NAME)
-EXE     := $(call FORM_EXE_NAME)
+EXE     := $(FORM_EXE_NAME)
 $$(DO_TEST_EXE)
 endef
 
-# $1 - if non-empty, then generate rules for simlinks
 # $v - dynamic library variant to test
 define TEST_DLL_TEMPLATE
 DLLS    := $(MEMSTACK_LIB_NAME)$(call DLL_VAR_SUFFIX,DLL,$v,$(MEMSTACK_DLL_VARIANTS))
 EXE     := $(call FORM_EXE_NAME,dyn)
-SHLIBS  := $$(DLLS:=.$(call ver_major,$(PRODUCT_VER)))
 EXE_DEFINES := MEMSTACK_EXPORTS=$(DLL_IMPORTS_DEFINE)
-$(if $1,$$(call TEST_NEED_SIMLINKS,$$(SHLIBS)))
-$$(call DO_TEST_EXE,$$(SHLIBS))
+$$(call DO_TEST_EXE,$$(DLLS:=.$(call ver_major,$(PRODUCT_VER))))
 endef
 
 # expand $(TEST_LIB_TEMPLATE) or $(TEST_DLL_TEMPLATE)
-# $1 - 1 or <empty>
 # $x - r-lib, r-dll, s-lib, ...
 EXPAND_TEST_TEMPLATE = $(foreach v,$(firstword $(subst -, ,$x)),$(if $(filter %-lib,$x),$(TEST_LIB_TEMPLATE),$(TEST_DLL_TEMPLATE)))
 
 SRC := memstack_test.c
 
 $(foreach x,$(TEST_LIB_VARIANTS) $(TEST_DLL_VARIANTS),$(eval \
-  $(call EXPAND_TEST_TEMPLATE,1))$(call MAKE_CONTINUE,SRC INCLUDE DEFINES RPATH))
+  $(EXPAND_TEST_TEMPLATE))$(call MAKE_CONTINUE,SRC INCLUDE DEFINES RPATH))
 
 SRC := memstack_test.cpp
 

@@ -19,17 +19,19 @@ endif
 
 ifeq (LINUX,$(OS))
 
-PREFIX          ?= /usr/local
-EXEC_PREFIX     ?= $(PREFIX)
-LIBDIR          ?= $(EXEC_PREFIX)/lib
-PKG_CONFIG_DIR  ?= $(LIBDIR)/pkgconfig
-INSTALL         ?= install
-LDCONFIG        ?= /sbin/ldconfig
+PREFIX         ?= /usr/local
+EXEC_PREFIX    ?= $(PREFIX)
+INCLUDEDIR     ?= $(PREFIX)/include
+LIBDIR         ?= $(EXEC_PREFIX)/lib
+PKG_CONFIG_DIR ?= $(LIBDIR)/pkgconfig
+INSTALL        ?= install
+LDCONFIG       ?= /sbin/ldconfig
 
 else ifeq (WINXX,$(OS))
 
-PREFIX ?= dist
-LIBDIR ?= $(PREFIX)\lib
+PREFIX     ?= dist
+INCLUDEDIR ?= $(PREFIX)\include
+LIBDIR     ?= $(PREFIX)\lib
 
 endif # WINXX
 

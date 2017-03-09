@@ -236,23 +236,24 @@ _Note_: allocations are written to `stderr`
 
     3.1 On Linux (_example_):
     ```sh
-    $ make MTOP=/home/user/clean-build OS=LINUX CPU=x86_64 TARGET=MEMSTACK
+    $ make MTOP=/home/user/clean-build OS=LINUX CPU=x86_64
     ```
 
     3.2 On Windows (_example_):
     ```cmd
-    C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 TARGET=MEMSTACK OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0"
+    C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0"
     ```
 
     _**Tips**_:
     - define `NO_STATIC=1` to not build static library archive
     - define `NO_SHARED=1` to not build shared library (dll)
-    - to view other possible values of `OS`, `CPU` or `TARGET` variables, do not define them
+    - define `TARGET=DEBUG` to build debug versions of libraries
+    - to view other possible values of `OS`, `CPU` or `TARGET` variables, define them as `?`
     - define variable `V=1` for verbose build, to print executed commands
 
     If make target is not specified, default target _`all`_ (compile the library) will be built
 
-    By default, all variants of library are built:
+    By default, all variants of libraries are built:
     * for static library  - `MEMSTACK_LIB_VARIANTS="R P D S"`
     * for dynamic library - `MEMSTACK_DLL_VARIANTS="R S"`
 
@@ -290,18 +291,19 @@ _Note_: allocations are written to `stderr`
 
     possibly as root, do
     ```sh
-    $ make MTOP=/home/user/clean-build OS=LINUX CPU=x86_64 TARGET=MEMSTACK install
+    $ make MTOP=/home/user/clean-build OS=LINUX CPU=x86_64 install
     ```
 
     4.2 On Windows (_example_):
     ```cmd
-    C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 TARGET=MEMSTACK OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0" PREFIX=C:\dst install
+    C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0" PREFIX=C:\dst install
     ```
 
-    _Note_: Headers are installed in `$(PREFIX)/include`, libraries - in `$(LIBDIR)`
+    _Note_: Headers are installed in `$(INCLUDEDIR)`, libraries - in `$(LIBDIR)`
 
     _**Tips**_:
     - define variable `PREFIX` to override default install location - `/usr/local` (for UNIX) or `dist` (for WINDOWS)
+    - define variable `INCLUDEDIR` to override default headers install location - `$(PREFIX)/include`
     - define variable `LIBDIR` to override default libraries install location - `$(PREFIX)/lib`
     - define variable `DESTDIR` to add prefix to `$(PREFIX)` - to make path to temporary install location
     - define `NO_INSTALL_HEADERS=1` to not install development library interface header files

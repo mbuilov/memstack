@@ -1,15 +1,10 @@
 # this file is included by $(MTOP)/defs.mk
 
-SUPPORTED_OSES    := WINXX SOLARIS LINUX
-SUPPORTED_CPUS    := x86 x86_64 sparc sparc64 armv5 mips24k ppc
-SUPPORTED_TARGETS := MEMSTACK MEMSTACKD
+SUPPORTED_OSES := WINXX SOLARIS LINUX
+SUPPORTED_CPUS := x86 x86_64 sparc sparc64 armv5 mips24k ppc
 
 DEFINCLUDE :=
-
-PREDEFINES := $(if $(DEBUG),_DEBUG) TARGET_$(patsubst %D,%,$(TARGET)) \
-              $(if $(filter sparc% mips% ppc%,$(CPU)),B_ENDIAN BIG_ENDIAN,L_ENDIAN) \
-              $(if $(filter sparc% mips% ppc% arm%,$(CPU)),ADDRESS_NEEDALIGN)
-
+PREDEFINES := $(if $(DEBUG),_DEBUG)
 APPDEFS :=
 
 ifeq (WINXX,$(OS))

@@ -218,7 +218,7 @@ Parameters:
 - `st`     - memstack structure
 - `enable` - non-zero to enable logging, `0` - to disable
 
-_Note_: allocations are written to `stderr`
+_Note_: allocations are written to `stdout`
 
 ---------------------------------------------------
 

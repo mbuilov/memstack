@@ -32,7 +32,7 @@
 
 #ifdef MEMSTACK_DEBUG
 #define MEMSTACK_LOG       fprintf
-#define MEMSTACK_LOG_ARG   stderr,
+#define MEMSTACK_LOG_ARG   stdout,
 #define MEMSTACK_ERROR     fprintf
 #define MEMSTACK_ERROR_ARG stderr,
 #endif

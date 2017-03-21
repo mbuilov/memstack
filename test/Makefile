@@ -5,7 +5,7 @@ include $(MTOP)/exts/ctest.mk
 INCLUDE := ..
 RPATH   := $(LIB_DIR)
 
-# don't test D-variant of static library - this variant for linking static library to dll
+# don't test D-variant of static library - this variant is for linking static library to dll
 TEST_LIB_VARIANTS := $(addsuffix -lib,$(if $(NO_STATIC),,$(filter-out D,$(call FILTER_VARIANTS_LIST,LIB,$(MEMSTACK_LIB_VARIANTS)))))
 TEST_DLL_VARIANTS := $(addsuffix -dll,$(if $(NO_SHARED),,$(call FILTER_VARIANTS_LIST,DLL,$(MEMSTACK_DLL_VARIANTS))))
 
@@ -42,7 +42,7 @@ $(foreach x,$(TEST_LIB_VARIANTS) $(TEST_DLL_VARIANTS),$(eval \
 SRC := memstack_test.cpp
 
 $(foreach x,$(wordlist 2,999999,$(TEST_LIB_VARIANTS) $(TEST_DLL_VARIANTS)),$(eval \
-  $(EXPAND_TEST_TEMPLATE))$(call MAKE_CONTINUE,SRC INCLUDE DEFINES RPATH))
+  $(EXPAND_TEST_TEMPLATE))$(call MAKE_CONTINUE,SRC INCLUDE RPATH))
 
 $(foreach x,$(firstword $(TEST_LIB_VARIANTS) $(TEST_DLL_VARIANTS)),$(eval $(EXPAND_TEST_TEMPLATE)))
 

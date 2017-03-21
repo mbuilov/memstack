@@ -8,7 +8,7 @@ else
 
 TO_MAKE := src
 
-ifneq ($(filter WINXX,$(OS)),)
+ifdef OS_WINXX
 TO_MAKE += version
 endif
 
@@ -16,7 +16,7 @@ ifneq ($(filter check tests clean,$(MAKECMDGOALS)),)
 TO_MAKE += test
 endif
 
-ifeq (LINUX,$(OS))
+ifdef OS_LINUX
 
 PREFIX         ?= /usr/local
 EXEC_PREFIX    ?= $(PREFIX)
@@ -26,7 +26,7 @@ PKG_CONFIG_DIR ?= $(LIBDIR)/pkgconfig
 INSTALL        ?= install
 LDCONFIG       ?= /sbin/ldconfig
 
-else ifeq (WINXX,$(OS))
+else ifdef OS_WINXX
 
 PREFIX     ?= dist
 INCLUDEDIR ?= $(PREFIX)\include

@@ -3,7 +3,6 @@ include $(MTOP)/c.mk
 include $(MTOP)/exts/ctest.mk
 
 INCLUDE := ..
-DEFINES := $(if $(DEBUG),MEMSTACK_DEBUG)
 RPATH   := $(LIB_DIR)
 
 # don't test D-variant of static library - this variant for linking static library to dll
@@ -19,6 +18,7 @@ FORM_EXE_NAME = $(subst .,_,$(SRC))$(addprefix -,$1)$(addprefix -,$(call tolower
 define TEST_LIB_TEMPLATE
 LIBS    := $(MEMSTACK_LIB_NAME)
 EXE     := $(FORM_EXE_NAME)
+DEFINES := $(if $(DEBUG),MEMSTACK_DEBUG)
 $$(DO_TEST_EXE)
 endef
 
@@ -26,7 +26,7 @@ endef
 define TEST_DLL_TEMPLATE
 DLLS    := $(MEMSTACK_LIB_NAME)$(call DLL_VAR_SUFFIX,DLL,$v,$(MEMSTACK_DLL_VARIANTS))
 EXE     := $(call FORM_EXE_NAME,dyn)
-EXE_DEFINES := MEMSTACK_EXPORTS=$(DLL_IMPORTS_DEFINE)
+DEFINES := $(if $(DEBUG),MEMSTACK_DEBUG) MEMSTACK_EXPORTS=$(DLL_IMPORTS_DEFINE)
 $$(call DO_TEST_EXE,$$(DLLS:=.$(call ver_major,$(PRODUCT_VER))))
 endef
 
@@ -37,7 +37,7 @@ EXPAND_TEST_TEMPLATE = $(foreach v,$(firstword $(subst -, ,$x)),$(if $(filter %-
 SRC := memstack_test.c
 
 $(foreach x,$(TEST_LIB_VARIANTS) $(TEST_DLL_VARIANTS),$(eval \
-  $(EXPAND_TEST_TEMPLATE))$(call MAKE_CONTINUE,SRC INCLUDE DEFINES RPATH))
+  $(EXPAND_TEST_TEMPLATE))$(call MAKE_CONTINUE,SRC INCLUDE RPATH))
 
 SRC := memstack_test.cpp
 

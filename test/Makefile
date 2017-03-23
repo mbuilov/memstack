@@ -24,7 +24,7 @@ endef
 
 # $v - dynamic library variant to test
 define TEST_DLL_TEMPLATE
-DLLS    := $(MEMSTACK_LIB_NAME)$(call DLL_VAR_SUFFIX,DLL,$v,$(MEMSTACK_DLL_VARIANTS))
+DLLS    := $(MEMSTACK_LIB_NAME)
 EXE     := $(call FORM_EXE_NAME,dyn)
 DEFINES := $(if $(DEBUG),MEMSTACK_DEBUG) MEMSTACK_EXPORTS=$(DLL_IMPORTS_DEFINE)
 $$(call DO_TEST_EXE,$$(DLLS:=.$(call ver_major,$(PRODUCT_VER))))

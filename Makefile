@@ -26,6 +26,15 @@ PKG_CONFIG_DIR ?= $(LIBDIR)/pkgconfig
 INSTALL        ?= install
 LDCONFIG       ?= /sbin/ldconfig
 
+else ifdef OS_SOLARIS
+
+PREFIX         ?= /usr/local
+EXEC_PREFIX    ?= $(PREFIX)
+INCLUDEDIR     ?= $(PREFIX)/include
+LIBDIR         ?= $(EXEC_PREFIX)/lib
+PKG_CONFIG_DIR ?= $(LIBDIR)/pkgconfig
+INSTALL        ?= /usr/ucb/install
+
 else ifdef OS_WINXX
 
 PREFIX     ?= dist

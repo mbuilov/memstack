@@ -3,7 +3,7 @@ include $(MTOP)/defs.mk
 
 ifneq ($(filter distclean,$(MAKECMDGOALS)),)
 distclean:
-	$(call RM,$(CLOBBER_DIRS))
+	$(call RM,$(BUILD))
 else
 
 TO_MAKE := src

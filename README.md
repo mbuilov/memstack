@@ -190,7 +190,7 @@ memstack_memory_t *m2 = memstack_get_last_mem(st, 100);
 assert(m1 == m2);
 ```
 
-=======================================================
+---------------------------------------------------
 
 #### Check red zones of memstack allocations
 ```C

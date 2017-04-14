@@ -10,7 +10,7 @@
 #include "memstack/memstack.h"
 
 MEMSTACK_NONNULL_ARGS
-MEMSTACK_EXPORTS void _memstack_destroy_(
+MEMSTACK_EXPORTS void _memstack_destroy__(
 	MEMSTACK_PRE_VALID MEMSTACK_POST_INVALID struct memstack *st MEMSTACK_DEBUG_ARGS_DECL)
 {
 #ifdef MEMSTACK_DEBUG
@@ -233,7 +233,7 @@ static int _memstack_pop_items_(
 }
 
 MEMSTACK_NONNULL_ARGS
-MEMSTACK_EXPORTS void _memstack_pop_(
+MEMSTACK_EXPORTS void _memstack_pop__(
 	MEMSTACK_INOUT struct memstack *st,
 	MEMSTACK_NOTNULL MEMSTACK_POST_PTR_INVALID memstack_memory_t *mem MEMSTACK_DEBUG_ARGS_DECL)
 {
@@ -365,7 +365,7 @@ MEMSTACK_EXPORTS MEMSTACK_RETURN_RESTRICT memstack_memory_t *_memstack_repush_la
 {
 	memstack_assert(new_size);
 	if (!mem)
-		return _memstack_push_(st, new_size MEMSTACK_DEBUG_ARGS_PASS);
+		return _memstack_push_((st, new_size MEMSTACK_DEBUG_ARGS_PASS));
 	{
 #ifdef MEMSTACK_DEBUG
 		void *p = DMEMSTACK_BLOCK_FROM_MEM(mem);
@@ -431,7 +431,7 @@ MEMSTACK_EXPORTS MEMSTACK_RETURN_RESTRICT memstack_memory_t *_memstack_repush_la
 }
 
 MEMSTACK_NONNULL_ARGS
-MEMSTACK_EXPORTS void _memstack_cleanup_(MEMSTACK_INOUT struct memstack *st MEMSTACK_DEBUG_ARGS_DECL)
+MEMSTACK_EXPORTS void _memstack_cleanup__(MEMSTACK_INOUT struct memstack *st MEMSTACK_DEBUG_ARGS_DECL)
 {
 	memstack_assert(!st->base.total_size ^ !!st->last);
 	memstack_assert(!st->last || !_memstack_is_last_free(st) || st->last->base.msize == _memstack_remaining(st));
@@ -442,7 +442,7 @@ MEMSTACK_EXPORTS void _memstack_cleanup_(MEMSTACK_INOUT struct memstack *st MEMS
 		memstack_assert(st->last && memstack_is_aligned(st->last->base.msize));
 		if (st->last->base.msize < st->base.max_total_size) {
 			/* don't have one big item */
-			_memstack_destroy_(st MEMSTACK_DEBUG_ARGS_PASS);
+			_memstack_destroy_((st MEMSTACK_DEBUG_ARGS_PASS));
 			st->base.bottom = NULL;
 			st->base.limit = NULL;
 			st->last = NULL;
@@ -500,14 +500,14 @@ static void _memstack_reset_items_(
 }
 
 MEMSTACK_NONNULL_ARG_1
-MEMSTACK_EXPORTS void _memstack_reset_(
+MEMSTACK_EXPORTS void _memstack_reset__(
 	MEMSTACK_INOUT struct memstack *st,
 	MEMSTACK_MAYBENULL struct memstack_bottom *pos MEMSTACK_DEBUG_ARGS_DECL)
 {
 	if (pos == st->base.bottom)
 		return;
 	if (!pos) {
-		_memstack_cleanup_(st MEMSTACK_DEBUG_ARGS_PASS);
+		_memstack_cleanup_((st MEMSTACK_DEBUG_ARGS_PASS));
 		return;
 	}
 	/* top < pos <= bottom */

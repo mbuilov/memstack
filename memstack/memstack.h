@@ -21,25 +21,26 @@ typedef struct memstack_memory memstack_memory_t;
 /* memstack bottom position */
 typedef struct memstack_bottom memstack_bottom_t;
 
-#define memstack_destroy(st)                          _memstack_destroy_(st MEMSTACK_DEBUG_ARGS)
-#define memstack_push(st, sz/*>0*/)                   _memstack_push_(st, sz MEMSTACK_DEBUG_ARGS)
-#define memstack_pop(st, mem)                         _memstack_pop_(st, mem MEMSTACK_DEBUG_ARGS)
-#define memstack_repush_last(st, mem, new_size/*>0*/) _memstack_repush_last_(st, mem, new_size MEMSTACK_DEBUG_ARGS)
-#define memstack_cleanup(st)                          _memstack_cleanup_(st MEMSTACK_DEBUG_ARGS)
-#define memstack_reset(st, pos)                       _memstack_reset_(st, pos MEMSTACK_DEBUG_ARGS)
+#define memstack_destroy(st)                          _memstack_destroy_((st MEMSTACK_DEBUG_ARGS))
+#define memstack_push(st, sz/*>0*/)                   _memstack_push_((st, sz MEMSTACK_DEBUG_ARGS))
+#define memstack_pop(st, mem)                         _memstack_pop_((st, mem MEMSTACK_DEBUG_ARGS))
+#define memstack_repush_last(st, mem, new_size/*>0*/) _memstack_repush_last_((st, mem, new_size MEMSTACK_DEBUG_ARGS))
+#define memstack_cleanup(st)                          _memstack_cleanup_((st MEMSTACK_DEBUG_ARGS))
+#define memstack_reset(st, pos)                       _memstack_reset_((st, pos MEMSTACK_DEBUG_ARGS))
 
-#define _memstack_push_(st, sz) \
-	((memstack_memory_t*)_memstack_assume_aligned(_memstack_push__(st, sz)))
+#define _memstack_destroy_(args)                      _memstack_destroy__ args
+#define _memstack_push_(args)                         ((memstack_memory_t*)_memstack_assume_aligned(_memstack_push__ args))
+#define _memstack_pop_(args)                          _memstack_pop__ args
+#define _memstack_repush_last_(args)                  ((memstack_memory_t*)_memstack_assume_aligned(_memstack_repush_last__ args))
+#define _memstack_cleanup_(args)                      _memstack_cleanup__ args
+#define _memstack_reset_(args)                        _memstack_reset__ args
 
-#define _memstack_repush_last_(st, mem, new_size) \
-	((memstack_memory_t*)_memstack_assume_aligned(_memstack_repush_last__(st, mem, new_size)))
-
-#define _memstack_destroy_      MEMSTACK_SUFFIX(memstack_destroy_)
-#define _memstack_push__        MEMSTACK_SUFFIX(memstack_push_)
-#define _memstack_pop_          MEMSTACK_SUFFIX(memstack_pop_)
-#define _memstack_repush_last__ MEMSTACK_SUFFIX(memstack_repush_last_)
-#define _memstack_cleanup_      MEMSTACK_SUFFIX(memstack_cleanup_)
-#define _memstack_reset_        MEMSTACK_SUFFIX(memstack_reset_)
+#define _memstack_destroy__                           MEMSTACK_SUFFIX(memstack_destroy_)
+#define _memstack_push__                              MEMSTACK_SUFFIX(memstack_push_)
+#define _memstack_pop__                               MEMSTACK_SUFFIX(memstack_pop_)
+#define _memstack_repush_last__                       MEMSTACK_SUFFIX(memstack_repush_last_)
+#define _memstack_cleanup__                           MEMSTACK_SUFFIX(memstack_cleanup_)
+#define _memstack_reset__                             MEMSTACK_SUFFIX(memstack_reset_)
 
 /* used internally: dynamically allocated memstack item */
 struct memstack_item {
@@ -110,7 +111,7 @@ static inline void memstack_init(
 
 /* free memory allocated for the stack, stack structure may be re-used only after memstack_init() */
 MEMSTACK_NONNULL_ARGS
-MEMSTACK_EXPORTS void _memstack_destroy_(
+MEMSTACK_EXPORTS void _memstack_destroy__(
 	MEMSTACK_PRE_VALID MEMSTACK_POST_INVALID struct memstack *st MEMSTACK_DEBUG_ARGS_DECL);
 
 /* memstack_push(): get memory block from the stack,
@@ -126,7 +127,7 @@ MEMSTACK_EXPORTS MEMSTACK_RETURN_RESTRICT memstack_memory_t *_memstack_push__(
   it is possible to pop multiple sequential allocations by one call - just pop the first allocation of the sequence */
 /* NOTE: passed mem pointer should be the same one returned by one of memstack_push() */
 MEMSTACK_NONNULL_ARGS
-MEMSTACK_EXPORTS void _memstack_pop_(
+MEMSTACK_EXPORTS void _memstack_pop__(
 	MEMSTACK_INOUT struct memstack *st,
 	MEMSTACK_NOTNULL MEMSTACK_POST_PTR_INVALID memstack_memory_t *mem MEMSTACK_DEBUG_ARGS_DECL);
 
@@ -147,7 +148,7 @@ MEMSTACK_EXPORTS MEMSTACK_RETURN_RESTRICT memstack_memory_t *_memstack_repush_la
 /* memstack_cleanup(): pop all stack items
   (but remember total size of popped items, first push() will try to allocate single block of maximum size) */
 MEMSTACK_NONNULL_ARGS
-MEMSTACK_EXPORTS void _memstack_cleanup_(MEMSTACK_INOUT struct memstack *st MEMSTACK_DEBUG_ARGS_DECL);
+MEMSTACK_EXPORTS void _memstack_cleanup__(MEMSTACK_INOUT struct memstack *st MEMSTACK_DEBUG_ARGS_DECL);
 
 /* get bottom position - this position may be passed to memstack_reset() */
 MEMSTACK_NONNULL_ARGS
@@ -165,7 +166,7 @@ static inline memstack_bottom_t *memstack_get_bottom(MEMSTACK_IN const struct me
 /* memstack_reset(): free stack items allocated in stack up to given bottom pos (obtained via memstack_get_bottom()) */
 /* NOTE: if pos is NULL then is equivalent to memstack_cleanup() */
 MEMSTACK_NONNULL_ARG_1
-MEMSTACK_EXPORTS void _memstack_reset_(
+MEMSTACK_EXPORTS void _memstack_reset__(
 	MEMSTACK_INOUT struct memstack *st,
 	MEMSTACK_MAYBENULL memstack_bottom_t *pos/*NULL?*/ MEMSTACK_DEBUG_ARGS_DECL);
 

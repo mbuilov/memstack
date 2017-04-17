@@ -30,12 +30,13 @@ DLL := $(if $(NO_SHARED),,$(MEMSTACK_LIB_NAME) $(MEMSTACK_DLL_VARIANTS))
 LIB := $(if $(NO_STATIC),,$(MEMSTACK_LIB_NAME) $(MEMSTACK_LIB_VARIANTS))
 
 LIBRARY_NAME := memstack
+LIBRARY_HDIR := memstack
 
-LIBRARY_HEADERS := \
+LIBRARY_HEADERS := $(addprefix $(TOP)/memstack/,\
   memstack_base.h \
   memstack_comn.h \
   memstack.h \
-  $(if $(DEBUG),memstack_debug.h)
+  $(if $(DEBUG),memstack_debug.h))
 
 define MEMSTACK_PC_COMMENT
 Author:  $(VENDOR_NAME)

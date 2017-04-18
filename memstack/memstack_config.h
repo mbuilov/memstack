@@ -9,7 +9,7 @@
 
 /* memstack_config.h */
 
-/* define external functions needed for memstack */
+/* define external functions needed to build memstack library */
 
 #include <stdlib.h>
 #include <string.h>

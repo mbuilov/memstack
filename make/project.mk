@@ -108,6 +108,7 @@ ifeq (SOLARIS,$(OS))
 #DEF_CFLAGS := -erroff=badargtype2w,wbadasg,wbadinit
 endif
 
+# default value for MODVER
 # major.minor.patch
 PRODUCT_VER := 1.0.3
 

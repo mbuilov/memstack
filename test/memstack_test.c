@@ -12,7 +12,7 @@
 
 #include "memstack/memstack.h"
 
-#define ASSERT(c) do { \
+#define CHECK(c) do { \
 	int __c = !!(c); \
 	assert(__c); \
 	if (!__c) \
@@ -29,15 +29,15 @@ static int test(void)
 	struct memstack *st = &stack;
 	memstack_init(st);
 	memstack_enable_log(st, 1);
-	ASSERT(!memstack_get_bottom(st));
+	CHECK(!memstack_get_bottom(st));
 	{
 		struct data *data = (struct data*)memstack_push(st, sizeof(*data));
-		ASSERT(data);
+		CHECK(data);
 		memstack_pop(st, (memstack_memory_t*)data);
 	}
 	{
 		memstack_memory_t *mem = memstack_push(st, 10);
-		ASSERT(mem);
+		CHECK(mem);
 		{
 			int k = 0;
 			for (; k < 10; k++)
@@ -45,44 +45,44 @@ static int test(void)
 		}
 		{
 			memstack_memory_t *mem2 = memstack_push(st, 5);
-			ASSERT(mem2);
+			CHECK(mem2);
 			{
 				/* number of bytes (5) must be the same as passed to previous memstack_push() */
 				memstack_memory_t *mem3 = memstack_get_last_mem(st, 5);
-				ASSERT(mem3);
-				ASSERT(mem2 == mem3);
+				CHECK(mem3);
+				CHECK(mem2 == mem3);
 				memstack_pop(st, mem3);
 			}
 		}
 		{
 			int k = 0;
 			for (; k < 10; k++)
-				ASSERT(((char*)mem)[k] == (char)(k + 1));
+				CHECK(((char*)mem)[k] == (char)(k + 1));
 		}
 		mem = memstack_repush_last(st, mem, 11);
-		ASSERT(mem);
+		CHECK(mem);
 		((char*)mem)[10] = 11;
 		memstack_check(st);
 		{
 			int k = 0;
 			for (; k < 11; k++)
-				ASSERT(((char*)mem)[k] == (char)(k + 1));
+				CHECK(((char*)mem)[k] == (char)(k + 1));
 		}
 		mem = memstack_repush_last(st, mem, 9);
-		ASSERT(mem);
+		CHECK(mem);
 		{
 			int k = 0;
 			for (; k < 9; k++)
-				ASSERT(((char*)mem)[k] == (char)(k + 1));
+				CHECK(((char*)mem)[k] == (char)(k + 1));
 		}
 		{
 			memstack_bottom_t *pos = memstack_get_bottom(st);
 			{
 				memstack_memory_t *mem2 = memstack_push(st, 5);
-				ASSERT(mem2);
+				CHECK(mem2);
 				{
 					memstack_memory_t *mem3 = memstack_push(st, 50);
-					ASSERT(mem3);
+					CHECK(mem3);
 					memstack_print(st);
 				}
 			}
@@ -91,14 +91,14 @@ static int test(void)
 		{
 			int k = 0;
 			for (; k < 9; k++)
-				ASSERT(((char*)mem)[k] == (char)(k + 1));
+				CHECK(((char*)mem)[k] == (char)(k + 1));
 		}
 	}
 	memstack_cleanup(st);
-	ASSERT(!memstack_get_bottom(st));
+	CHECK(!memstack_get_bottom(st));
 	{
 		memstack_memory_t *mem = memstack_push(st, 1);
-		ASSERT(mem);
+		CHECK(mem);
 	}
 	memstack_cleanup(st);
 	{
@@ -123,7 +123,11 @@ static int test(void)
 
 int main(int argc, char *argv[])
 {
-	(void)argc;
-	(void)argv;
-	return test();
+	(void)argc, (void)argv;
+	if (test()) {
+		fprintf(stderr, "failed\n");
+		return 1;
+	}
+	printf("test ok\n");
+	return 0;
 }

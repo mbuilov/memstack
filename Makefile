@@ -1,10 +1,7 @@
 include $(dir $(lastword $(MAKEFILE_LIST)))top.mk
 include $(MTOP)/defs.mk
 
-ifneq ($(filter distclean,$(MAKECMDGOALS)),)
-distclean:
-	$(call RM,$(BUILD))
-else
+ifeq ($(filter distclean,$(MAKECMDGOALS)),)
 
 TO_MAKE := src
 
@@ -42,12 +39,6 @@ INCLUDEDIR ?= $(PREFIX)\include
 LIBDIR     ?= $(PREFIX)\lib
 
 endif # WINXX
-
-install:
-	@$(call ECHO,Successfully installed to $(DESTDIR)$(PREFIX))
-
-uninstall:
-	@$(call ECHO,Uninstalled from $(DESTDIR)$(PREFIX))
 
 include $(MTOP)/parallel.mk
 

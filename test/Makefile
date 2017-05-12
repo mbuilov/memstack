@@ -1,4 +1,4 @@
-include $(dir $(lastword $(MAKEFILE_LIST)))../top.mk
+include $(dir $(lastword $(MAKEFILE_LIST)))../conf.mk
 include $(MTOP)/c.mk
 include $(MTOP)/exts/ctest.mk
 
@@ -42,9 +42,7 @@ $(foreach x,$(TEST_LIB_VARIANTS) $(TEST_DLL_VARIANTS),$(eval \
 
 SRC := memstack_test.cpp
 
-$(foreach x,$(wordlist 2,999999,$(TEST_LIB_VARIANTS) $(TEST_DLL_VARIANTS)),$(eval \
+$(foreach x,$(TEST_LIB_VARIANTS) $(TEST_DLL_VARIANTS),$(eval \
   $(EXPAND_TEST_TEMPLATE))$(call MAKE_CONTINUE,SRC INCLUDE RPATH))
-
-$(foreach x,$(firstword $(TEST_LIB_VARIANTS) $(TEST_DLL_VARIANTS)),$(eval $(EXPAND_TEST_TEMPLATE)))
 
 $(DEFINE_TARGETS)

@@ -65,7 +65,7 @@ NO_SHARED:=
 NO_STATIC:=
 
 # MTOP - path to clean-build - must be defined either in command line or in $(TOP)/conf.mk
-# MTOP must not be taken from environment
+# note: do not inherit MTOP value from environment
 MTOP:=
 
 # override defaults, if $(TOP)/conf.mk was generated
@@ -75,6 +75,10 @@ MTOP:=
 ifndef MTOP
 $(error MTOP - path to clean-build (https://github.com/mbuilov/clean-build) is not defined,\
  example: MTOP=/usr/local/clean-build or MTOP=C:\User\clean-build)
+endif
+
+ifeq (WINXX,$(OS))
+override PREDEFINES = $(call lazy_simple,override PREDEFINES,$(if $(DEBUG),_DEBUG) $(OS_PREDEFINES))
 endif
 
 endif

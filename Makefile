@@ -1,5 +1,5 @@
 include $(dir $(lastword $(MAKEFILE_LIST)))project.mk
-include $(MTOP)/defs.mk
+include $(MTOP)/parallel.mk
 
 ifeq (,$(filter distclean,$(MAKECMDGOALS)))
 
@@ -13,6 +13,6 @@ ifneq (,$(filter check tests clean,$(MAKECMDGOALS)))
 TO_MAKE += test
 endif
 
-include $(MTOP)/parallel.mk
+$(call PROCESS_SUBMAKES,$(TO_MAKE))
 
 endif # !distclean

@@ -1,17 +1,18 @@
-include $(dir $(lastword $(MAKEFILE_LIST)))../conf.mk
+include $(dir $(lastword $(MAKEFILE_LIST)))../project.mk
 include $(MTOP)/c.mk
 include $(MTOP)/exts/ctest.mk
 
 INCLUDE := ..
 RPATH   := $(LIB_DIR)
 
-# don't test D-variant of static library - this variant is for linking static library to dll
+# don't test D-variant of static memstack library - this variant is for linking static library to some dll
 TEST_LIB_VARIANTS := $(addsuffix -lib,$(if $(NO_STATIC),,$(filter-out D,$(call FILTER_VARIANTS_LIST,LIB,$(MEMSTACK_LIB_VARIANTS)))))
 TEST_DLL_VARIANTS := $(addsuffix -dll,$(if $(NO_SHARED),,$(call FILTER_VARIANTS_LIST,DLL,$(MEMSTACK_DLL_VARIANTS))))
 
 # form test executable name
 # $1 - dyn or <empty>
 # $v - variant
+# memstack_test.c -> memstack_test_c-dyn-s
 FORM_EXE_NAME = $(subst .,_,$(SRC))$(addprefix -,$1)$(addprefix -,$(call tolower,$(filter-out R,$v))) $v
 
 # $v - static library variant to test

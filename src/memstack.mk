@@ -1,4 +1,4 @@
-include $(dir $(lastword $(MAKEFILE_LIST)))../make/project.mk
+include $(dir $(lastword $(MAKEFILE_LIST)))../project.mk
 include $(MTOP)/c.mk
 
 INCLUDE := ..

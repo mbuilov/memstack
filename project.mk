@@ -36,6 +36,9 @@ VENDOR_COPYRIGHT := Copyright (C) 2008-2017 $(VENDOR_NAME), $(VENDOR_URL)
 # licence for generated pkgconfig .pc file
 PRODUCT_LICENCE  := LGPL version 2.1 or any later version
 
+# default target
+TARGET := RELEASE
+
 # library name
 MEMSTACK_LIB_NAME := memstack$(if $(filter DEBUG,$(TARGET)),d)
 

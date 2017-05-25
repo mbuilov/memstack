@@ -241,15 +241,15 @@ _Note_: allocations are written to `stdout`
 
     3.2 On Windows (_example_):
     ```cmd
-    C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0"
+    C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 WINVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0"
     ```
 
     _**Tips**_:
-    - define `NO_STATIC=1` to not build static library archive
-    - define `NO_SHARED=1` to not build shared library (dll)
-    - define `TARGET=DEBUG` to build debug versions of libraries
+    - specify `NO_STATIC=1` to not build static library archive
+    - specify `NO_SHARED=1` to not build shared library (dll)
+    - specify `TARGET=DEBUG` to build debugging versions of libraries
     - to view other possible values of `OS`, `CPU` or `TARGET` variables, define them as `?`
-    - define variable `V=1` for verbose build, to print executed commands
+    - specify `V=1` for verbose build, to print executed commands
 
     If make target is not specified, default target _`all`_ (compile the library) will be built
 
@@ -296,21 +296,21 @@ _Note_: allocations are written to `stdout`
 
     4.2 On Windows (_example_):
     ```cmd
-    C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 OSVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0" PREFIX=C:\dst install
+    C:\tools\gnumake-4.2.1.exe MTOP=C:\tools\clean-build OS=WINXX CPU=x86_64 WINVARIANT=WIN7 VS="C:\Program Files (x86)\Microsoft Visual Studio 14.0" WDK="C:\Program Files (x86)\Windows Kits\10" WDK_TARGET="10.0.14393.0" PREFIX=C:\dst install
     ```
 
     _Note_: Headers are installed in `$(INCLUDEDIR)`, libraries - in `$(LIBDIR)`
 
     _**Tips**_:
-    - define variable `PREFIX` to override default install location - `/usr/local` (for UNIX) or `dist` (for WINDOWS)
+    - define variable `PREFIX` to override default install location - `/usr/local` (for UNIX) or `artifacts` (for WINDOWS)
     - define variable `INCLUDEDIR` to override default headers install location - `$(PREFIX)/include`
     - define variable `LIBDIR` to override default libraries install location - `$(PREFIX)/lib`
     - define variable `DESTDIR` to add prefix to `$(PREFIX)` - to make path to temporary install location
-    - define `NO_INSTALL_HEADERS=1` to not install development library interface header files
-    - define `NO_INSTALL_LA=1` to not install development libtool library files (for UNIX)
-    - define `NO_INSTALL_PC=1` to not install development pkg-config  library files (for UNIX)
-    - define `NO_INSTALL_IMPS=1` to not install development dll import libraries (for WINDOWS)
-    - define `NO_DEV=1` to not install all above development files (headers, .la, .pc, import libraries)
+    - specify `NO_INSTALL_HEADERS=1` to not install development library interface header files
+    - specify `NO_INSTALL_LA=1` to not install development libtool library files (for UNIX)
+    - specify `NO_INSTALL_PC=1` to not install development pkg-config  library files (for UNIX)
+    - specify `NO_INSTALL_IMPS=1` to not install development dll import libraries (for WINDOWS)
+    - specify `NO_DEVEL=1` to not install all above development files (headers, .la, .pc, import libraries)
 
     _**Tip**_: there is one more predefined target:
     * _`uninstall`_ - to delete installed files. Note: some installed directories may not be deleted.

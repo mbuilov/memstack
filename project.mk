@@ -60,10 +60,6 @@ MEMSTACK_DLL_VARIANTS := R S
 NO_SHARED:=
 NO_STATIC:=
 
-# define _DEBUG in debugging build
-# note: redefine PREDEFINES variable as non-recursive (simple) on first call
-PREDEFINES = $(call lazy_simple,PREDEFINES,$(if $(DEBUG),_DEBUG) $(OS_PREDEFINES))
-
 # optional, clean-build generated config file (while completing 'conf' goal)
 # Note: define CONFIG as recursive variable
 #  - for the case when BUILD is defined in command line also as recursive variable

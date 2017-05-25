@@ -5,6 +5,8 @@ include $(MTOP)/exts/install_lib.mk
 DLL := $(if $(NO_SHARED),,$(MEMSTACK_LIB_NAME) $(MEMSTACK_DLL_VARIANTS))
 LIB := $(if $(NO_STATIC),,$(MEMSTACK_LIB_NAME) $(MEMSTACK_LIB_VARIANTS))
 
+DEFINES := $(if $(DEBUG),MEMSTACK_DEBUG)
+
 LIBRARY_HDIR := memstack
 
 LIBRARY_HEADERS := $(addprefix $(TOP)/memstack/,\
@@ -26,7 +28,7 @@ MEMSTACK_PC_GENERATOR = $(call PKGCONF_DEF_TEMPLATE,$1,$(if \
  ,)$(PRODUCT_NAME),$(if \
  ,)$(MEMSTACK_PC_COMMENT),$(if \
  ,)$(VENDOR_URL)$(if \
- ,),,,,$(if $(DEBUG),-DMEMSTACK_DEBUG)$(call VARIANT_CFLAGS,$2))
+ ,),,,,$(addprefix -D,$(DEFINES))$(call VARIANT_CFLAGS,$2))
 
 LIBRARY_PC_GEN := MEMSTACK_PC_GENERATOR
 

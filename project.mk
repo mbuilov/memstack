@@ -60,15 +60,6 @@ MEMSTACK_DLL_VARIANTS := R S
 NO_SHARED:=
 NO_STATIC:=
 
-ifneq (,$(filter WINXX Windows_NT,$(OS)))
-APP_FLAGS = $(filter-out /W3,$(OS_APP_FLAGS)) /Wall
-APP_FLAGS += /wd4820 # 'x' bytes padding added after data member ...
-APP_FLAGS += /wd4710 # 'void fn()': function not inlined
-APP_FLAGS += /wd4711 # function 'fn' selected for automatic inline expansion
-APP_FLAGS += /wd4514 # 'fn': unreferenced inline function has been removed
-$(eval APP_FLAGS = $$(call lazy_simple,APP_FLAGS,$(value APP_FLAGS)))
-endif
-
 # optional, clean-build generated config file (while completing 'conf' goal)
 # Note: define CONFIG as recursive variable
 #  - for the case when BUILD is defined in command line also as recursive variable

@@ -9,7 +9,7 @@ ifneq (override,$(origin TOP))
 override TOP := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 
 # specify version of clean-build build system required by this project
-CLEAN_BUILD_REQUIRED_VERSION := 0.6.3
+CLEAN_BUILD_REQUIRED_VERSION := 0.8.6
 
 # BUILD - variable required by clean-build - path to built artifacts
 BUILD := $(TOP)/build

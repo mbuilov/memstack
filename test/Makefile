@@ -29,7 +29,7 @@ define TEST_DLL_TEMPLATE
 DLLS    := $(MEMSTACK_LIB_NAME)
 EXE     := $(call FORM_EXE_NAME,dyn)
 DEFINES := $(if $(DEBUG),MEMSTACK_DEBUG) MEMSTACK_EXPORTS=$(DLL_IMPORTS_DEFINE)
-$$(call DO_TEST_EXE,$$(DLLS:=.$(call ver_major,$(PRODUCT_VER))),,,PATH=$$$$(PATH)$$(PATHSEP)$$(LIB_DIR))
+$$(call DO_TEST_EXE,,$$(DLLS:=.$(call ver_major,$(PRODUCT_VER))),,PATH=$$$$(PATH)$$(PATHSEP)$$(LIB_DIR))
 endef
 
 # expand $(TEST_LIB_TEMPLATE) or $(TEST_DLL_TEMPLATE)
